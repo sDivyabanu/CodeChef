@@ -9,7 +9,39 @@ import { ImageLoaderComponent } from "../../Utility";
 function DeptCard({ name, icon, description, memberCount, allMembers, currentLeads }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const departmentLeads = currentLeads.filter((lead) => lead.position === name);
+  // const departmentLeads = currentLeads.filter((lead) => lead.position === name);
+// Cleaner, more robust filtering
+  const departmentLeads = currentLeads.filter((lead) => {
+    // Safety check: ensure values exist
+    const leadPos = lead.position ? lead.position.toLowerCase() : "";
+    const deptName = name ? name.toLowerCase() : "";
+
+    // 1. Direct Match (ignores case and simple spaces)
+    if (leadPos.trim() === deptName.trim()) return true;
+
+    // 2. Bulletproof Fix for "Sponsorship & Marketing"
+    // Checks if both the Dept name AND the Lead position contain BOTH keywords
+    if (
+      deptName.includes("sponsorship") &&
+      deptName.includes("marketing") &&
+      leadPos.includes("sponsorship") &&
+      leadPos.includes("marketing")
+    ) {
+      return true;
+    }
+
+    // 3. Optional: Fix for "Social Media & Content" (if needed)
+    if (
+      deptName.includes("social") &&
+      deptName.includes("content") &&
+      leadPos.includes("social") &&
+      leadPos.includes("content")
+    ) {
+      return true;
+    }
+
+    return false;
+  });
 
   const handleButtonClick = (e) => {
     e.stopPropagation();
