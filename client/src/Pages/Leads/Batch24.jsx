@@ -27,6 +27,21 @@ const positionMatches = (position, aliases) => {
   return aliases.some((alias) => normalized === alias);
 };
 
+const getPositionEntries = (team, aliases) =>
+  Object.entries(team || {}).filter(([key]) => positionMatches(key, aliases));
+
+const renderTopLead = (key, lead, title, wrapperClassName, headingClassName) => (
+  <div key={key} className={wrapperClassName}>
+    <h3 className={headingClassName}>{title}</h3>
+    <LeadCard
+      name={lead.name}
+      image={lead.image}
+      hashCode={lead.hash}
+      link={lead.linkedIn}
+    />
+  </div>
+);
+
 const renderYearTabs = (activeYear, setYear) => (
   <div className="flex items-center justify-center space-x-4">
     {LEAD_YEARS.map((year) => (
@@ -559,125 +574,86 @@ function Batch24() {
         ) : sanityTeam ? (
           <>
             {/* President, VP, General Secretary */}
-            <div className="hidden md:flex md:flex-row justify-center items-center md:items-end">
-              {Object.entries(sanityTeam)
-                .filter(
-                  ([key]) =>
-                    key === "Vice President" || key.startsWith("Vice President")
-                )
-                .map(([key, lead]) => (
-                  <div key={key} className="inline-block scale-125 my-10">
-                    <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-                      Vice President
-                    </h3>
-                    <LeadCard
-                      name={lead.name}
-                      image={lead.image}
-                      hashCode={lead.hash}
-                      link={lead.linkedIn}
-                    />
-                  </div>
-                ))}
+            <div className="hidden md:grid grid-cols-[minmax(220px,1fr)_auto_minmax(260px,1fr)] items-end gap-x-6 lg:gap-x-10 max-w-7xl mx-auto px-8 mt-28 mb-24">
+              <div className="flex justify-center">
+                {getPositionEntries(sanityTeam, ["vice president"]).map(
+                  ([key, lead]) =>
+                    renderTopLead(
+                      key,
+                      lead,
+                      "Vice President",
+                      "inline-block scale-110 lg:scale-125 origin-bottom",
+                      "text-[24px] whitespace-nowrap text-center font-bold text-gray-700 py-2"
+                    )
+                )}
+              </div>
 
-              {Object.entries(sanityTeam)
-                .filter(
-                  ([key]) => key === "President" || key.startsWith("President")
-                )
-                .map(([key, lead]) => (
-                  <div key={key} className="inline-block scale-150 my-20 mx-20">
-                    <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-                      President
-                    </h3>
-                    <LeadCard
-                      name={lead.name}
-                      image={lead.image}
-                      hashCode={lead.hash}
-                      link={lead.linkedIn}
-                    />
-                  </div>
-                ))}
+              <div className="flex justify-center">
+                {getPositionEntries(sanityTeam, ["president"]).map(([key, lead]) =>
+                  renderTopLead(
+                    key,
+                    lead,
+                    "President",
+                    "inline-block scale-150 origin-bottom",
+                    "text-[24px] whitespace-nowrap text-center font-bold text-gray-700 py-2"
+                  )
+                )}
+              </div>
 
-              {Object.entries(sanityTeam)
-                .filter(
-                  ([key]) =>
-                    key === "General Secretary" ||
-                    key.startsWith("General Secretary")
-                )
-                .map(([key, lead]) => (
-                  <div key={key} className="inline-block scale-125 my-10">
-                    <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-                      General Secretary
-                    </h3>
-                    <LeadCard
-                      name={lead.name}
-                      image={lead.image}
-                      hashCode={lead.hash}
-                      link={lead.linkedIn}
-                    />
-                  </div>
-                ))}
+              <div className="flex justify-center items-end gap-4 lg:gap-6">
+                {[
+                  ...getPositionEntries(sanityTeam, ["general secretary"]).map(
+                    ([key, lead]) => [key, lead, "General Secretary"]
+                  ),
+                  ...getPositionEntries(sanityTeam, [
+                    "co-secretary",
+                    "co secretary",
+                  ]).map(([key, lead]) => [key, lead, "Co-Secretary"]),
+                ].map(([key, lead, title]) =>
+                  renderTopLead(
+                    key,
+                    lead,
+                    title,
+                    "inline-block scale-105 lg:scale-110 origin-bottom",
+                    "text-[20px] xl:text-[22px] whitespace-nowrap text-center font-bold text-gray-700 py-2"
+                  )
+                )}
+              </div>
             </div>
 
             {/* Mobile view for top positions */}
-            <div className="flex flex-col block md:hidden md:flex-row justify-center items-center md:items-end max-[440px]:scale-90">
-              {Object.entries(sanityTeam)
-                .filter(
-                  ([key]) => key === "President" || key.startsWith("President")
+            <div className="flex flex-col md:hidden justify-center items-center px-4 pt-8 pb-12">
+              {getPositionEntries(sanityTeam, ["president"]).map(([key, lead]) =>
+                renderTopLead(
+                  key,
+                  lead,
+                  "President",
+                  "inline-block scale-125 origin-bottom mb-16",
+                  "text-[24px] whitespace-nowrap text-center font-bold text-gray-700 py-2"
                 )
-                .map(([key, lead]) => (
-                  <div key={key} className="inline-block scale-150 my-20 mx-20">
-                    <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-                      President
-                    </h3>
-                    <LeadCard
-                      name={lead.name}
-                      image={lead.image}
-                      hashCode={lead.hash}
-                      link={lead.linkedIn}
-                    />
-                  </div>
-                ))}
+              )}
 
-              <div className="w-full flex flex-row justify-evenly">
-                {Object.entries(sanityTeam)
-                  .filter(
-                    ([key]) =>
-                      key === "Vice President" ||
-                      key.startsWith("Vice President")
+              <div className="grid grid-cols-1 min-[520px]:grid-cols-2 gap-x-4 gap-y-8 justify-items-center w-full max-w-[520px]">
+                {[
+                  ...getPositionEntries(sanityTeam, ["vice president"]).map(
+                    ([key, lead]) => [key, lead, "Vice President"]
+                  ),
+                  ...getPositionEntries(sanityTeam, ["general secretary"]).map(
+                    ([key, lead]) => [key, lead, "General Secretary"]
+                  ),
+                  ...getPositionEntries(sanityTeam, [
+                    "co-secretary",
+                    "co secretary",
+                  ]).map(([key, lead]) => [key, lead, "Co-Secretary"]),
+                ].map(([key, lead, title]) =>
+                  renderTopLead(
+                    key,
+                    lead,
+                    title,
+                    "inline-block",
+                    "text-[20px] whitespace-nowrap text-center font-bold text-gray-700 py-2"
                   )
-                  .map(([key, lead]) => (
-                    <div key={key} className="inline-block scale-105 my-10">
-                      <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-                        Vice President
-                      </h3>
-                      <LeadCard
-                        name={lead.name}
-                        image={lead.image}
-                        hashCode={lead.hash}
-                        link={lead.linkedIn}
-                      />
-                    </div>
-                  ))}
-
-                {Object.entries(sanityTeam)
-                  .filter(
-                    ([key]) =>
-                      key === "General Secretary" ||
-                      key.startsWith("General Secretary")
-                  )
-                  .map(([key, lead]) => (
-                    <div key={key} className="inline-block scale-105 my-10">
-                      <h3 className="text-[24px] text-center font-bold text-gray-700 py-2">
-                        General Secretary
-                      </h3>
-                      <LeadCard
-                        name={lead.name}
-                        image={lead.image}
-                        hashCode={lead.hash}
-                        link={lead.linkedIn}
-                      />
-                    </div>
-                  ))}
+                )}
               </div>
             </div>
 

@@ -51,6 +51,7 @@ export default {
           {title: 'President', value: 'President'},
           {title: 'Vice President', value: 'Vice President'},
           {title: 'General Secretary', value: 'General Secretary'},
+          {title: 'Co-Secretary', value: 'Co-Secretary'},
           {title: 'Design', value: 'Design'},
           {title: 'Social Media & Content', value: 'Social Media & Content'},
           {title: 'Technical (CP)', value: 'Technical (CP)'},
