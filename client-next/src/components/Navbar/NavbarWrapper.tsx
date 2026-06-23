@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Navbar from "./navbar";
+import FloatingIcons from "../FloatingIcons/FloatingIcons";
 
 export default function NavbarWrapper() {
   const pathname = usePathname();
@@ -12,5 +13,10 @@ export default function NavbarWrapper() {
     return null;
   }
 
-  return <Navbar />;
+  return (
+    <>
+      <Navbar />
+      <FloatingIcons />
+    </>
+  );
 }
