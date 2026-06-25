@@ -5,16 +5,27 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Cpu, Loader2, ArrowUpRight } from "lucide-react";
 import Footer from "@/components/Footer/Footer";
-import { BlogPost, ALL_BLOGS_DATA, slugify } from "./blogsData";
+import { BlogPost, slugify, portableTextToPlainText } from "./blogsData";
+import { client } from "@/lib/sanityClient";
 
-// asynchronous API call
-const dummyFetchBlogs = (): Promise<BlogPost[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(ALL_BLOGS_DATA);
-    }, 800);
-  });
-};
+// Fetch blogs from Sanity
+async function fetchBlogsFromSanity(): Promise<BlogPost[]> {
+  const query = `*[_type == "blogs"] | order(date desc)`;
+  const data = await client.fetch(query);
+  if (Array.isArray(data)) {
+    return data.map((b: any, index: number) => ({
+      id: b._id,
+      title: b.heading || "Untitled Blog",
+      about: b.about || "",
+      content: portableTextToPlainText(b.blog),
+      date: b.date || new Date().toISOString().split("T")[0],
+      imageUrl: b.imageUrl || "/images/codechef_team_photo.png",
+      category: "TECH & INSIGHTS",
+      icon: index % 2 === 0 ? "terminal" : "cpu",
+    }));
+  }
+  return [];
+}
 
 export default function BlogsPage() {
   const router = useRouter();
@@ -27,7 +38,7 @@ export default function BlogsPage() {
     const loadBlogs = async () => {
       try {
         setLoading(true);
-        const data = await dummyFetchBlogs();
+        const data = await fetchBlogsFromSanity();
         setBlogs(data);
       } catch (err) {
         console.error("Error retrieving blogs: ", err);
