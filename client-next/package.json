@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fontsource/bebas-neue": "^5.2.7",
+    "@sanity/client": "^7.23.0",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.21.0",
     "next": "16.2.9",

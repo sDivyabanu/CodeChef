@@ -15,6 +15,24 @@
     --foreground: #ededed;
   }
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.alumni-track:hover .float1,
+.alumni-track:hover .float2,
+.alumni-track:hover .float3,
+.alumni-track:hover .float4 {
+  animation-play-state: paused !important;
+}
+.alumni-track.paused {
+  animation-play-state: paused !important;
+}
 @keyframes float {
   0%,100% {
     transform: translateY(0px);
