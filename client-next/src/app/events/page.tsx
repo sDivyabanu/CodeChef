@@ -82,7 +82,6 @@ export default function EventsPage() {
       <div className="py-10">
         <div className="alumni-track gap-8 flex py-10">
           {[...eventCards, ...eventCards].map((card, index) => {
-            // Display visual thumbnail of recent events in fanning marquee cards
             const associatedEvent = events.length > 0 ? events[index % events.length] : null;
             const hasImage = associatedEvent?.imageUrl;
             
@@ -109,7 +108,6 @@ export default function EventsPage() {
                   }}
                 >
                   {hasImage ? (
-                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={urlFor(associatedEvent.imageUrl).width(300).auto('format').url()}
                       alt=""
@@ -129,7 +127,6 @@ export default function EventsPage() {
         </div>
       </div>
 
-      {/* Loading & Empty States */}
       {loading ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4">
           <div className="w-12 h-12 border-4 border-[#ECE9C7] border-t-transparent rounded-full animate-spin" />
@@ -212,7 +209,6 @@ export default function EventsPage() {
                   >
                     <div className="w-full h-[200px] bg-[#D8D6D7] border border-black/10 relative overflow-hidden">
                       {event.imageUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
                         <img
                           src={urlFor(event.imageUrl).width(500).auto('format').url()}
                           alt={event.title}

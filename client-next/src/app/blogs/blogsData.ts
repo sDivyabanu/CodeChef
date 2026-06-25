@@ -9,7 +9,7 @@ export interface BlogPost {
   imageUrl?: string;
 }
 
-// Helper to convert Sanity's block portable text to plain text string
+// Helper function to convert Sanity Portable Text to plain text
 export function portableTextToPlainText(blocks: any[]): string {
   if (!Array.isArray(blocks)) return "";
   return blocks

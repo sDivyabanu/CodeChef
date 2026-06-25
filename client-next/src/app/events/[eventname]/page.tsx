@@ -68,7 +68,6 @@ export default function EventDetailPage() {
       });
   }, [eventname]);
 
-  // ── Loading state ──────────────────────────────────────────────────────────
   if (loading) {
     return (
       <div className="min-h-screen bg-[#4A6FA5] flex flex-col items-center justify-center font-sans">
@@ -82,7 +81,6 @@ export default function EventDetailPage() {
     );
   }
 
-  // ── Error / Not found state ────────────────────────────────────────────────
   if (error || !event) {
     return (
       <div className="min-h-screen bg-[#4A6FA5] flex flex-col items-center justify-center gap-8 px-6 font-sans">
@@ -136,7 +134,6 @@ export default function EventDetailPage() {
       <section className="w-full max-w-[1466px] mx-auto px-4 md:px-0">
         <div className="w-full relative overflow-hidden rounded-[10px] md:rounded-[0px]">
           {finalImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={finalImage}
               alt={event.title}
@@ -219,7 +216,6 @@ export default function EventDetailPage() {
                   key={index} 
                   className="bg-[#ECE9C7] p-3 border border-black/10 shadow-[12px_12px_0px_rgba(0,0,0,0.18)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden h-[300px] group"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={galleryImgUrl}
                     alt={`Event gallery item ${index + 1}`}
