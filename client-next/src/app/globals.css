@@ -1,10 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-bebas: "Bebas Neue", sans-serif;
   --font-cera: "Outfit", "Inter", sans-serif;
 }
+
+  --font-orbitron: "Orbitron", sans-serif;
+  --font-teko: "Teko", sans-serif;
+}
+
 
 :root {
   --background: #ffffff;
@@ -20,6 +27,24 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.alumni-track:hover .float1,
+.alumni-track:hover .float2,
+.alumni-track:hover .float3,
+.alumni-track:hover .float4 {
+  animation-play-state: paused !important;
+}
+.alumni-track.paused {
+  animation-play-state: paused !important;
 }
 @keyframes float {
   0%,100% {
