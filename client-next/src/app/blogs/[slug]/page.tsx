@@ -4,34 +4,17 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Loader2, ArrowLeft } from "lucide-react";
 import Footer from "@/components/Footer/Footer";
-import { BlogPost, slugify, portableTextToPlainText } from "../blogsData";
-import { client } from "@/lib/sanityClient";
+import { BlogPost, ALL_BLOGS_DATA, slugify } from "../blogsData";
 
-// Fetch single blog by slug from Sanity
-async function fetchBlogBySlugFromSanity(slug: string): Promise<BlogPost | null> {
-  try {
-    const query = `*[_type == "blogs"]`;
-    const blogs = await client.fetch(query);
-    if (Array.isArray(blogs) && blogs.length > 0) {
-      const found = blogs.find((b: any) => slugify(b.heading || "") === slug);
-      if (found) {
-        return {
-          id: found._id,
-          title: found.heading || "Untitled Blog",
-          about: found.about || "",
-          content: portableTextToPlainText(found.blog),
-          date: found.date || new Date().toISOString().split("T")[0],
-          imageUrl: found.imageUrl || "/images/codechef_team_photo.png",
-          category: "TECH & INSIGHTS",
-          icon: "terminal",
-        };
-      }
-    }
-  } catch (error) {
-    console.error("Error fetching blog from Sanity:", error);
-  }
-  return null;
-}
+// asynchronous API fetch by slug
+const dummyFetchBlogBySlug = (slug: string): Promise<BlogPost | undefined> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const matched = ALL_BLOGS_DATA.find((b) => slugify(b.title) === slug);
+      resolve(matched);
+    }, 600);
+  });
+};
 
 export default function BlogDetailPage() {
   const params = useParams();
@@ -46,8 +29,8 @@ export default function BlogDetailPage() {
     
     const loadBlogData = async () => {
       setLoading(true);
-      const data = await fetchBlogBySlugFromSanity(slug);
-      setBlog(data);
+      const data = await dummyFetchBlogBySlug(slug);
+      setBlog(data || null);
       setLoading(false);
     };
 
@@ -101,8 +84,8 @@ export default function BlogDetailPage() {
 
             <section className="mb-14 overflow-hidden border-2 border-black/10 shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-black/25">
               <img
-                src={blog.imageUrl || "/images/codechef_team_photo.png"}
-                alt={blog.title}
+                src="/images/codechef_team_photo.png"
+                alt="CodeChef Team"
                 className="w-full h-auto max-h-[699px] object-cover"
               />
             </section>
@@ -114,7 +97,7 @@ export default function BlogDetailPage() {
               <div className="w-20 h-1 bg-[#FEFED7] mt-3" />
             </div>
 
-            <article className="text-white font-cera text-base md:text-2xl leading-relaxed md:leading-[38px] tracking-wide font-light max-w-[1280px] mx-auto mt-8 mb-16 whitespace-pre-line select-text text-justify">
+            <article className="text-white font-cera text-xl md:text-[32px] md:leading-[45px] tracking-wide font-light max-w-[1280px] mx-auto mt-8 mb-16 whitespace-pre-line select-text text-justify">
               {blog.content}
             </article>
 

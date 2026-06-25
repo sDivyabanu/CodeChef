@@ -14,11 +14,8 @@
  *   var(--font-roboto)  →  Roboto      (UI labels / buttons)
  *   var(--font-outfit)  →  Outfit      (accent / subheadings)
  */
-@theme {
-  --font-bebas: var(--font-bebas);
-  --font-inter: var(--font-inter);
-  --font-roboto: var(--font-roboto);
-  --font-outfit: var(--font-outfit);
+
+:root {
   --font-bebas: "Bebas Neue", sans-serif;
   --font-cera: "Outfit", "Inter", sans-serif;
   --font-orbitron: "Orbitron", sans-serif;

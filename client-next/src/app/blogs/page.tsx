@@ -5,27 +5,16 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Cpu, Loader2, ArrowUpRight } from "lucide-react";
 import Footer from "@/components/Footer/Footer";
-import { BlogPost, slugify, portableTextToPlainText } from "./blogsData";
-import { client } from "@/lib/sanityClient";
+import { BlogPost, ALL_BLOGS_DATA, slugify } from "./blogsData";
 
-// Fetch blogs from Sanity
-async function fetchBlogsFromSanity(): Promise<BlogPost[]> {
-  const query = `*[_type == "blogs"] | order(date desc)`;
-  const data = await client.fetch(query);
-  if (Array.isArray(data)) {
-    return data.map((b: any, index: number) => ({
-      id: b._id,
-      title: b.heading || "Untitled Blog",
-      about: b.about || "",
-      content: portableTextToPlainText(b.blog),
-      date: b.date || new Date().toISOString().split("T")[0],
-      imageUrl: b.imageUrl || "/images/codechef_team_photo.png",
-      category: "TECH & INSIGHTS",
-      icon: index % 2 === 0 ? "terminal" : "cpu",
-    }));
-  }
-  return [];
-}
+// asynchronous API call
+const dummyFetchBlogs = (): Promise<BlogPost[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(ALL_BLOGS_DATA);
+    }, 800);
+  });
+};
 
 export default function BlogsPage() {
   const router = useRouter();
@@ -38,7 +27,7 @@ export default function BlogsPage() {
     const loadBlogs = async () => {
       try {
         setLoading(true);
-        const data = await fetchBlogsFromSanity();
+        const data = await dummyFetchBlogs();
         setBlogs(data);
       } catch (err) {
         console.error("Error retrieving blogs: ", err);
@@ -82,7 +71,7 @@ export default function BlogsPage() {
                 key={i}
                 className="font-bebas text-white text-3xl md:text-4xl mx-8 tracking-widest"
               >
-                LATEST BLOGS &nbsp; ✦
+                LATEST CONTEST &nbsp; ✦
               </span>
             ))}
           </div>
@@ -116,13 +105,6 @@ export default function BlogsPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
                     className="w-full relative overflow-hidden bg-black/85 border border-white/10 rounded-[40px] md:rounded-[50px] p-8 md:p-14 shadow-2xl flex flex-col justify-between min-h-[400px] md:min-h-[460px]"
-                    style={{
-                      backgroundImage: featuredBlog.imageUrl
-                        ? `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.85)), url(${featuredBlog.imageUrl})`
-                        : undefined,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
                   >
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                       <span className="font-bebas text-[#FFFFFF] text-2xl tracking-wider">
@@ -175,15 +157,8 @@ export default function BlogsPage() {
                       className="bg-[#FEFED7] w-full max-w-[559px] h-[418px] p-6 flex flex-col justify-between border-2 border-black/10 shadow-[10px_4px_4px_rgba(0,0,0,0.25)] hover:shadow-[12px_6px_6px_rgba(0,0,0,0.35)] hover:-translate-y-1 transition-all duration-300 relative text-black"
                     >
                       <div>
-                        <div className="w-full max-w-[466px] h-[181px] mx-auto bg-[#D8D6D7] border-[1.5px] border-black flex items-center justify-center relative shadow-inner overflow-hidden">
-                          {blog.imageUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={blog.imageUrl}
-                              alt={blog.title}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : blog.icon === "terminal" ? (
+                        <div className="w-full max-w-[466px] h-[181px] mx-auto bg-[#D8D6D7] border-[1.5px] border-black flex items-center justify-center relative shadow-inner">
+                          {blog.icon === "terminal" ? (
                             <span className="font-mono text-5xl font-bold text-[#1E1E1E] tracking-tighter select-none">&gt;_</span>
                           ) : (
                             <Cpu className="w-12 h-12 text-[#1E1E1E]" strokeWidth={2.5} />
