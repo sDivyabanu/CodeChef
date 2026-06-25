@@ -10,37 +10,41 @@ function DeptCard({ name, icon, description, memberCount, allMembers, currentLea
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   // const departmentLeads = currentLeads.filter((lead) => lead.position === name);
+  const normalizeDepartmentName = (value = "") => {
+    const normalized = value.toLowerCase().trim();
+
+    if (normalized.includes("technical") || normalized.includes("competitive programming")) {
+      return "technical cp";
+    }
+
+    if (
+      normalized.includes("projects & web dev") ||
+      normalized.includes("projects and web dev") ||
+      normalized.includes("web development") ||
+      normalized === "projects"
+    ) {
+      return "projects web dev";
+    }
+
+    if (
+      normalized.includes("outreach") ||
+      normalized.includes("marketing") ||
+      normalized.includes("sponsorship")
+    ) {
+      return "outreach";
+    }
+
+    return normalized.replace(/&/g, "and");
+  };
+
 // Cleaner, more robust filtering
   const departmentLeads = currentLeads.filter((lead) => {
     // Safety check: ensure values exist
-    const leadPos = lead.position ? lead.position.toLowerCase() : "";
-    const deptName = name ? name.toLowerCase() : "";
+    const leadPos = normalizeDepartmentName(lead.position);
+    const deptName = normalizeDepartmentName(name);
 
     // 1. Direct Match (ignores case and simple spaces)
-    if (leadPos.trim() === deptName.trim()) return true;
-
-    // 2. Bulletproof Fix for "Sponsorship & Marketing"
-    // Checks if both the Dept name AND the Lead position contain BOTH keywords
-    if (
-      deptName.includes("sponsorship") &&
-      deptName.includes("marketing") &&
-      leadPos.includes("sponsorship") &&
-      leadPos.includes("marketing")
-    ) {
-      return true;
-    }
-
-    // 3. Optional: Fix for "Social Media & Content" (if needed)
-    if (
-      deptName.includes("social") &&
-      deptName.includes("content") &&
-      leadPos.includes("social") &&
-      leadPos.includes("content")
-    ) {
-      return true;
-    }
-
-    return false;
+    return leadPos === deptName;
   });
 
   const handleButtonClick = (e) => {

@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
+import { isBlurhashValid } from "blurhash";
 import { Blurhash } from "react-blurhash";
+
+const DEFAULT_BLURHASH = "L7OgHHof00of01kB~pj[~Uay~Vj@";
 
 const ImageLoaderComponent = ({ url, hashCode, alt, className, blurWidth, blurHeight,rounded }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const validHash = isBlurhashValid(hashCode || "").result ? hashCode : DEFAULT_BLURHASH;
 
   useEffect(() => {
     const img = new Image();
@@ -27,7 +31,7 @@ const ImageLoaderComponent = ({ url, hashCode, alt, className, blurWidth, blurHe
         rounded ? (
           <div style={roundedStyle}>
             <Blurhash
-              hash={hashCode}
+              hash={validHash}
               width={blurWidth}
               height={blurHeight}
               resolutionX={32}
@@ -37,7 +41,7 @@ const ImageLoaderComponent = ({ url, hashCode, alt, className, blurWidth, blurHe
           </div>
         ) : (
           <Blurhash
-            hash={hashCode}
+            hash={validHash}
             width={blurWidth}
             height={blurHeight}
             resolutionX={32}

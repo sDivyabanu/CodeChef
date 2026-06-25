@@ -275,8 +275,7 @@ function DeptDisplay() {
     fetchLeads();
   }, []);
 
-  const currentBatch = "2025"; //Use this for displaying 2025-2026 leads by default
-  // const currentBatch = "2024"; //Use this for displaying 2024-2025 leads by default
+  const currentBatch = "2026"; // Use this for displaying 2026-2027 leads by default
   const currentLeads = allLeads.filter((lead) => lead.batch === currentBatch);
 
   const renderDeptCards = (data) => {
