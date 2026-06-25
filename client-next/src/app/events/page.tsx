@@ -145,7 +145,7 @@ export default function EventsPage() {
         <>
           {/* 3. Featured Article Banner */}
           {featuredEvent && (
-            <div className="max-w-[1200px] w-[90%] mx-auto mt-8 mb-16 z-10">
+            <div className="max-w-[1466px] w-[90%] mx-auto mt-8 mb-16 z-10">
               <div
                 className="w-full h-[400px] rounded-[45px] relative overflow-hidden border-4 border-black group"
                 style={{
@@ -196,7 +196,7 @@ export default function EventsPage() {
           )}
 
           {/* 4. Events Grid */}
-          <div className="max-w-[1200px] w-[90%] mx-auto mb-24 z-10">
+          <div className="max-w-[1466px] w-[90%] mx-auto mb-24 z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {events.map((event) => (
                 <Link

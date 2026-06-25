@@ -173,7 +173,7 @@ export default function EventDetailPage() {
       </section>
 
       {/* 4. Description Content */}
-      <section className="max-w-[1200px] w-[90%] mx-auto px-6 md:px-0 mt-16 mb-16">
+      <section className="max-w-[1466px] w-[90%] mx-auto px-6 md:px-0 mt-16 mb-16">
         <p
           className="text-white text-base md:text-2xl leading-relaxed md:leading-[38px] font-normal"
           style={{
@@ -186,7 +186,7 @@ export default function EventDetailPage() {
 
       {/* 4b. Optional subtitle2 & description2 from Sanity */}
       {(event.subtitle2 || event.description2) && (
-        <section className="max-w-[1200px] w-[90%] mx-auto px-6 md:px-0 mb-16">
+        <section className="max-w-[1466px] w-[90%] mx-auto px-6 md:px-0 mb-16">
           {event.subtitle2 && (
             <h2 className="text-3xl md:text-5xl font-normal leading-normal text-white uppercase font-bebas mb-6">
               {event.subtitle2}
@@ -207,7 +207,7 @@ export default function EventDetailPage() {
 
       {/* 4c. Optional Event Image Gallery from Sanity */}
       {event.gallery && Array.isArray(event.gallery) && event.gallery.length > 0 && (
-        <section className="max-w-[1200px] w-[90%] mx-auto mb-24">
+        <section className="max-w-[1466px] w-[90%] mx-auto mb-24">
           <h2 className="text-4xl md:text-6xl font-normal text-white uppercase font-bebas mb-10 text-center tracking-wider">
             Event Gallery
           </h2>
