@@ -102,7 +102,7 @@ export default function Footer() {
       </div>
 
       {/* Main Content Area */}
-      <div className="w-full px-10 py-10 md:py-16">
+      <div className="w-full px-10 py-6 md:py-10">
         <div className="flex flex-col md:flex-row md:justify-between items-center gap-10 md:gap-6">
           
           {/* Left Section: Social Icons */}
@@ -152,14 +152,14 @@ export default function Footer() {
                     text-white 
                     font-sans 
                     font-bold 
-                    text-[10px] 
-                    xs:text-xs 
-                    md:text-sm 
+                    text-[9px] 
+                    xs:text-[11px] 
+                    md:text-xs 
                     tracking-widest 
-                    py-3 
+                    py-2 
                     px-3 
                     xs:px-4 
-                    md:px-8 
+                    md:px-6 
                     text-center 
                     rounded-lg 
                     shadow-[0_4px_10px_rgba(0,0,0,0.25)] 
@@ -185,18 +185,18 @@ export default function Footer() {
       </div>
 
       {/* Bottom Brand Section */}
-      <div className="bg-[#0b1c3d] pt-8 md:pt-14 pb-4 overflow-hidden border-t border-black/10">
+      <div className="bg-[#0b1c3d] pt-4 md:pt-6 pb-2 overflow-hidden border-t border-black/10">
         <div className="max-w-[1600px] mx-auto px-4 relative">
           <div 
             className="
               text-center 
               font-sans 
               font-black 
-              text-[4.5rem] 
-              xs:text-[6rem] 
-              sm:text-[9rem] 
-              md:text-[13rem] 
-              lg:text-[16rem] 
+              text-[3rem] 
+              xs:text-[4rem] 
+              sm:text-[5.5rem] 
+              md:text-[7rem] 
+              lg:text-[8.5rem] 
               leading-none 
               text-[#F5F0D8] 
               tracking-tighter 

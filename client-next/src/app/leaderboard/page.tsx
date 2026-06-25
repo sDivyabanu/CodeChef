@@ -14,11 +14,18 @@ const ChefHat = ({ rank }: { rank: number }) => {
       ? "/images/Group 163.png" 
       : "/images/Group 163 (2).png";
   
+  // Target orientation and translation to center above the avatar's head naturally
+  const transformClass = rank === 1 
+    ? "rotate-0 translate-y-[4px]" 
+    : rank === 2 
+      ? "rotate-[-12deg] -translate-x-[20px] translate-y-[6px]" 
+      : "rotate-[12deg] translate-x-[20px] translate-y-[6px]";
+  
   return (
     <img 
       src={src} 
       alt={`Chef hat for Rank #${rank}`} 
-      className="w-28 h-20 object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.4)]"
+      className={`w-28 h-20 object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.4)] ${transformClass}`}
     />
   );
 };
@@ -109,18 +116,18 @@ function PodiumCard({
       <div className={`absolute w-40 h-40 rounded-full blur-3xl opacity-50 -z-10 ${glowClass}`} />
 
       {/* Chef Hat floating above the avatar */}
-      <div className="mb-2 transition-transform duration-300 hover:-translate-y-1">
+      <div className="relative mb-1.5 z-30 transition-transform duration-300 hover:-translate-y-1">
         <ChefHat rank={rank} />
       </div>
 
       {/* Circular Avatar Placeholder */}
-      <div className="relative mb-3 z-10">
+      <div className="relative -mb-5 z-20">
         <Avatar rank={rank} />
       </div>
 
       {/* Black Podium Base formed by base2.png (lid) and base1.png (cylinder body) */}
       <div className={`
-        relative flex flex-col items-center -mt-4 z-20
+        relative flex flex-col items-center z-10
         ${isCenter ? 'w-56' : 'w-48'}
       `}>
         {/* base2: Top Lid */}
@@ -162,18 +169,18 @@ function PodiumCard({
 function PodiumSection() {
   return (
     <section className="w-full max-w-4xl mx-auto px-6 mt-8 mb-16 flex flex-col md:flex-row items-center md:items-end justify-center gap-10 md:gap-12 lg:gap-16">
-      {/* Rank #2 (Left Card: Neutral glow, silver/white stars) */}
+      {/* Rank #2 (Left Card: Silver glow, silver/white stars) */}
       <PodiumCard 
         rank={2} 
-        name="Gowreesh VT" 
-        glowClass="bg-blue-300/40" 
+        name="—" 
+        glowClass="bg-slate-300/40" 
         starColor="#E2E8F0" 
       />
 
       {/* Rank #1 (Center Card: Yellow glow, yellow stars) */}
       <PodiumCard 
         rank={1} 
-        name="Shivansh Kumar" 
+        name="—" 
         glowClass="bg-yellow-400/50" 
         starColor="#EAB308" 
         isCenter={true} 
@@ -182,8 +189,8 @@ function PodiumSection() {
       {/* Rank #3 (Right Card: Bronze glow, bronze/copper stars) */}
       <PodiumCard 
         rank={3} 
-        name="Divyabanu S" 
-        glowClass="bg-rose-400/30" 
+        name="—" 
+        glowClass="bg-orange-600/35" 
         starColor="#92400E" 
       />
     </section>
@@ -219,16 +226,16 @@ function LeaderboardRow({
 // Component 5: LeaderboardTable placing the large cream-colored panel and rendering placeholder rows.
 function LeaderboardTable() {
   const rows = [
-    { name: "Shivansh Kumar", star: "5 ★", rating: "2840", isTopThree: true },
-    { name: "Gowreesh VT", star: "5 ★", rating: "2720", isTopThree: true },
-    { name: "Divyabanu S", star: "5 ★", rating: "2690", isTopThree: true },
-    { name: "Aryan Gupta", star: "4 ★", rating: "2480", isTopThree: false },
-    { name: "Anmay Dev", star: "4 ★", rating: "2410", isTopThree: false },
-    { name: "Shashank Sharma", star: "4 ★", rating: "2390", isTopThree: false },
-    { name: "Aaditya Prabhu", star: "3 ★", rating: "1980", isTopThree: false },
-    { name: "Vishal Kumar Yadav", star: "3 ★", rating: "1870", isTopThree: false },
-    { name: "Sairam Sundar", star: "3 ★", rating: "1850", isTopThree: false },
-    { name: "Rahul Singh", star: "2 ★", rating: "1540", isTopThree: false },
+    { name: "—", star: "5 ★", rating: "2840", isTopThree: true },
+    { name: "—", star: "5 ★", rating: "2720", isTopThree: true },
+    { name: "—", star: "5 ★", rating: "2690", isTopThree: true },
+    { name: "—", star: "4 ★", rating: "2480", isTopThree: false },
+    { name: "—", star: "4 ★", rating: "2410", isTopThree: false },
+    { name: "—", star: "4 ★", rating: "2390", isTopThree: false },
+    { name: "—", star: "3 ★", rating: "1980", isTopThree: false },
+    { name: "—", star: "3 ★", rating: "1870", isTopThree: false },
+    { name: "—", star: "3 ★", rating: "1850", isTopThree: false },
+    { name: "—", star: "2 ★", rating: "1540", isTopThree: false },
   ];
 
   return (

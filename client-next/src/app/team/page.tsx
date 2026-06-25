@@ -123,6 +123,7 @@ interface LeadDetail {
 interface MemberDetail {
   name: string;
   linkedin?: string;
+  github?: string;
 }
 
 interface Department {
@@ -138,42 +139,68 @@ interface Department {
 
 // Storing actual name listings for different academic years
 const YEAR_DATA: Record<string, YearData> = {
-  "2025-26": {
+  "2026-27": {
     board: [
-      { name: "Gowreesh VT", designation: "Vice Chairperson" },
-      { name: "Shivansh Kumar", designation: "Chairperson", isBlack: true },
-      { name: "Divyabanu S", designation: "Secretary" },
-      { name: "Sairam Sundar", designation: "Co-Secretary" },
-      { name: "Aaditya Prabhu", designation: "Treasurer", isBlack: true },
-      { name: "Vishal Kumar Yadav", designation: "Co-Treasurer" },
+      { name: "—", designation: "Chairperson", isBlack: true },
+      { name: "—", designation: "Vice Chairperson" },
+      { name: "—", designation: "Secretary" },
+      { name: "—", designation: "Co-Secretary" },
     ],
     leads: [
-      { name: "Shashank Sharma", role: "CP Lead", dept: "Competitive Programming" },
-      { name: "Kavya Nair", role: "Web Dev Lead", dept: "Web Development" },
-      { name: "Rohan Verma", role: "Design Lead", dept: "Design" },
-      { name: "Devansh Gupta", role: "Projects Lead", dept: "Projects" },
-      { name: "Meera Deshmukh", role: "Social Media Lead", dept: "Social Media" },
-      { name: "Aditya Prasad", role: "Sponsorship & PR Lead", dept: "Sponsorship & Marketing" },
-      { name: "Arjun Kapoor", role: "Event Management Lead", dept: "Event Management" },
+      { name: "—", role: "Technical Lead", dept: "Technical (CP)" },
+      { name: "—", role: "Projects & Web Dev Lead", dept: "Projects & Web Dev" },
+      { name: "—", role: "Design Lead", dept: "Design" },
+      { name: "—", role: "Social Media & Content Lead", dept: "Social Media & Content" },
+      { name: "—", role: "Outreach Lead", dept: "Outreach" },
+      { name: "—", role: "Event Management Lead", dept: "Event Management" },
+    ],
+  },
+  "2025-26": {
+    board: [
+      { name: "—", designation: "Chairperson", isBlack: true },
+      { name: "—", designation: "Vice Chairperson" },
+      { name: "—", designation: "Secretary" },
+      { name: "—", designation: "Co-Secretary" },
+    ],
+    leads: [
+      { name: "—", role: "Technical Lead", dept: "Technical (CP)" },
+      { name: "—", role: "Projects & Web Dev Lead", dept: "Projects & Web Dev" },
+      { name: "—", role: "Design Lead", dept: "Design" },
+      { name: "—", role: "Social Media & Content Lead", dept: "Social Media & Content" },
+      { name: "—", role: "Outreach Lead", dept: "Outreach" },
+      { name: "—", role: "Event Management Lead", dept: "Event Management" },
     ],
   },
   "2024-25": {
     board: [
-      { name: "Anmay Dev", designation: "Vice Chairperson" },
-      { name: "Aryan Gupta", designation: "Chairperson", isBlack: true },
-      { name: "Shashank Sharma", designation: "Secretary" },
-      { name: "Siddharth Jain", designation: "Co-Secretary" },
-      { name: "Kavya Nair", designation: "Treasurer", isBlack: true },
-      { name: "Rohan Verma", designation: "Co-Treasurer" },
+      { name: "—", designation: "Chairperson", isBlack: true },
+      { name: "—", designation: "Vice Chairperson" },
+      { name: "—", designation: "Secretary" },
+      { name: "—", designation: "Co-Secretary" },
     ],
     leads: [
-      { name: "Amit Bansal", role: "CP Lead", dept: "Competitive Programming" },
-      { name: "Priyanka Arora", role: "Web Dev Lead", dept: "Web Development" },
-      { name: "Shalini Kumari", role: "Design Lead", dept: "Design" },
-      { name: "Jatin Khanna", role: "Projects Lead", dept: "Projects" },
-      { name: "Rithvik Sen", role: "Social Media Lead", dept: "Social Media" },
-      { name: "Naman Singh", role: "Sponsorship & PR Lead", dept: "Sponsorship & Marketing" },
-      { name: "Neha Choudhary", role: "Event Management Lead", dept: "Event Management" },
+      { name: "—", role: "Technical Lead", dept: "Technical (CP)" },
+      { name: "—", role: "Projects & Web Dev Lead", dept: "Projects & Web Dev" },
+      { name: "—", role: "Design Lead", dept: "Design" },
+      { name: "—", role: "Social Media & Content Lead", dept: "Social Media & Content" },
+      { name: "—", role: "Outreach Lead", dept: "Outreach" },
+      { name: "—", role: "Event Management Lead", dept: "Event Management" },
+    ],
+  },
+  "2023-24": {
+    board: [
+      { name: "—", designation: "Chairperson", isBlack: true },
+      { name: "—", designation: "Vice Chairperson" },
+      { name: "—", designation: "Secretary" },
+      { name: "—", designation: "Co-Secretary" },
+    ],
+    leads: [
+      { name: "—", role: "Technical Lead", dept: "Technical (CP)" },
+      { name: "—", role: "Projects & Web Dev Lead", dept: "Projects & Web Dev" },
+      { name: "—", role: "Design Lead", dept: "Design" },
+      { name: "—", role: "Social Media & Content Lead", dept: "Social Media & Content" },
+      { name: "—", role: "Outreach Lead", dept: "Outreach" },
+      { name: "—", role: "Event Management Lead", dept: "Event Management" },
     ],
   },
 };
@@ -181,57 +208,62 @@ const YEAR_DATA: Record<string, YearData> = {
 const DEPARTMENTS: Department[] = [
   {
     id: "cp",
-    name: "Competitive Programming",
+    name: "Technical (CP)",
     leadsCount: 2,
     membersCount: 12,
     icon: <CPIcon />,
     description: "Solving algorithmic puzzles and writing highly-optimized code for contests.",
     leads: [
-      { name: "Shashank Sharma", role: "CP Lead", github: "https://github.com", linkedin: "https://linkedin.com" },
-      { name: "Ananya Iyer", role: "CP Co-Lead", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Technical Lead", github: "https://github.com", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Technical Co-Lead", linkedin: "https://linkedin.com" },
     ],
     members: [
-      { name: "Rahul Singh", linkedin: "https://linkedin.com" },
-      { name: "Priya Murthy", linkedin: "https://linkedin.com" },
-      { name: "Vikram Reddy" },
-      { name: "Sneha Kapoor", linkedin: "https://linkedin.com" },
-      { name: "Karan Bhasin" },
-      { name: "Rohan Varma", linkedin: "https://linkedin.com" },
-      { name: "Meera Datt" },
-      { name: "Aditya Pant", linkedin: "https://linkedin.com" },
-      { name: "Neha Chandra" },
-      { name: "Arjun Kunder", linkedin: "https://linkedin.com" },
-      { name: "Ishaan Trivedi" },
-      { name: "Tanvi Shetty", linkedin: "https://linkedin.com" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
     ],
   },
   {
-    id: "webdev",
-    name: "Web Development",
+    id: "projects_webdev",
+    name: "Projects & Web Dev",
     leadsCount: 2,
-    membersCount: 15,
+    membersCount: 20,
     icon: <WebIcon />,
-    description: "Architecting high-performance websites and user interfaces using React, Next.js, and modern tools.",
+    description: "Architecting high-performance websites, mobile applications, AI products, and user interfaces.",
     leads: [
-      { name: "Kavya Nair", role: "Web Dev Lead", github: "https://github.com", linkedin: "https://linkedin.com" },
-      { name: "Devansh Gupta", role: "Web Dev Co-Lead", github: "https://github.com", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Projects & Web Dev Lead", github: "https://github.com", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Projects & Web Dev Co-Lead", github: "https://github.com", linkedin: "https://linkedin.com" },
     ],
     members: [
-      { name: "Siddharth Jain", linkedin: "https://linkedin.com" },
-      { name: "Nisha Patel", linkedin: "https://linkedin.com" },
-      { name: "Gowreesh VT", github: "https://github.com", linkedin: "https://linkedin.com" },
-      { name: "Divyabanu S", linkedin: "https://linkedin.com" },
-      { name: "Rohan Khanna" },
-      { name: "Priyanka Arora", linkedin: "https://linkedin.com" },
-      { name: "Karthik Raja" },
-      { name: "Shreya Taneja", linkedin: "https://linkedin.com" },
-      { name: "Amit Bansal" },
-      { name: "Harish Sundar" },
-      { name: "Sneha Latha", linkedin: "https://linkedin.com" },
-      { name: "Varun Dev" },
-      { name: "Vijay Prasad" },
-      { name: "Divya Nambiar", linkedin: "https://linkedin.com" },
-      { name: "Manish Rao" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—", github: "https://github.com", linkedin: "https://linkedin.com" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
     ],
   },
   {
@@ -242,92 +274,64 @@ const DEPARTMENTS: Department[] = [
     icon: <DesignIcon />,
     description: "Designing assets, poster layouts, user experiences, and brand guidelines for all club publications.",
     leads: [
-      { name: "Rohan Verma", role: "Design Lead", linkedin: "https://linkedin.com" },
-      { name: "Shalini Kumari", role: "Design Co-Lead", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Design Lead", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Design Co-Lead", linkedin: "https://linkedin.com" },
     ],
     members: [
-      { name: "Shalini K", linkedin: "https://linkedin.com" },
-      { name: "Abhishek Sen" },
-      { name: "Megha Rao", linkedin: "https://linkedin.com" },
-      { name: "Pranav Mishra" },
-      { name: "Kiran Patel", linkedin: "https://linkedin.com" },
-      { name: "Deepak Saini" },
-      { name: "Aarti Negi", linkedin: "https://linkedin.com" },
-      { name: "Vivek Goyal" },
-      { name: "Suresh Chandra" },
-      { name: "Swathi Devi", linkedin: "https://linkedin.com" },
-    ],
-  },
-  {
-    id: "projects",
-    name: "Projects",
-    leadsCount: 2,
-    membersCount: 14,
-    icon: <ProjectsIcon />,
-    description: "Developing full-scale products, mobile applications, AI prototypes, and contributing to open-source software.",
-    leads: [
-      { name: "Devansh Gupta", role: "Projects Lead", github: "https://github.com", linkedin: "https://linkedin.com" },
-      { name: "Jatin Khanna", role: "Projects Co-Lead", github: "https://github.com", linkedin: "https://linkedin.com" },
-    ],
-    members: [
-      { name: "Jatin K", linkedin: "https://linkedin.com" },
-      { name: "Ashwin Srinivasan", github: "https://github.com" } as any,
-      { name: "Rhea Mehta", linkedin: "https://linkedin.com" },
-      { name: "Tanmay Chaturvedi" },
-      { name: "Varsha Rajan", linkedin: "https://linkedin.com" },
-      { name: "Nikhil Tandon" },
-      { name: "Sakshi Goel", linkedin: "https://linkedin.com" },
-      { name: "Tarun Kumar" },
-      { name: "Uday Sankar" },
-      { name: "Vaishnavi Kulkarni", linkedin: "https://linkedin.com" },
-      { name: "Abhinav Dutt" },
-      { name: "Bala Ram" },
-      { name: "Chitra Sundaram", linkedin: "https://linkedin.com" },
-      { name: "Dinesh Kumar" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
     ],
   },
   {
     id: "social",
-    name: "Social Media",
+    name: "Social Media & Content",
     leadsCount: 1,
     membersCount: 8,
     icon: <SocialIcon />,
-    description: "Managing club community engagement and content distribution channels.",
+    description: "Managing club community engagement, posts, copy, and content distribution channels.",
     leads: [
-      { name: "Meera Deshmukh", role: "Social Media Lead", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Social Media & Content Lead", linkedin: "https://linkedin.com" },
     ],
     members: [
-      { name: "Rithvik Sen", linkedin: "https://linkedin.com" },
-      { name: "Riya Patel", linkedin: "https://linkedin.com" },
-      { name: "Arpit Dev" },
-      { name: "Saniya Mirza", linkedin: "https://linkedin.com" },
-      { name: "Sameer Varma" },
-      { name: "Prisha Kapoor", linkedin: "https://linkedin.com" },
-      { name: "Yash Sharma" },
-      { name: "Zoya Rahman", linkedin: "https://linkedin.com" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
     ],
   },
   {
-    id: "sponsorship",
-    name: "Sponsorship & Marketing",
+    id: "outreach",
+    name: "Outreach",
     leadsCount: 1,
     membersCount: 10,
     icon: <SponsorIcon />,
     description: "Establishing industry collaborations, sponsorship decks, and managing public relations outreach.",
     leads: [
-      { name: "Aditya Prasad", role: "Sponsorship Lead", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Outreach Lead", linkedin: "https://linkedin.com" },
     ],
     members: [
-      { name: "Naman Singh", linkedin: "https://linkedin.com" },
-      { name: "Nupur Kulkarni", linkedin: "https://linkedin.com" },
-      { name: "Omkar Verma" },
-      { name: "Payal Goel", linkedin: "https://linkedin.com" },
-      { name: "Raghav Chawla" },
-      { name: "Rajesh Sharma" },
-      { name: "Rekha Murthy", linkedin: "https://linkedin.com" },
-      { name: "Rohan Dutt" },
-      { name: "Sajal Roy" },
-      { name: "Sonia Gupta", linkedin: "https://linkedin.com" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
     ],
   },
   {
@@ -338,39 +342,44 @@ const DEPARTMENTS: Department[] = [
     icon: <EventIcon />,
     description: "Coordinating logistics, schedules, operations, and venue management for tech events.",
     leads: [
-      { name: "Arjun Kapoor", role: "Events Lead", linkedin: "https://linkedin.com" },
-      { name: "Neha Choudhary", role: "Events Co-Lead", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Events Lead", linkedin: "https://linkedin.com" },
+      { name: "—", role: "Events Co-Lead", linkedin: "https://linkedin.com" },
     ],
     members: [
-      { name: "Tarun Kumar", linkedin: "https://linkedin.com" },
-      { name: "Uma Rajan", linkedin: "https://linkedin.com" },
-      { name: "Vasudev Shastri" },
-      { name: "Vidya Gowri", linkedin: "https://linkedin.com" },
-      { name: "Vinay Chandran" },
-      { name: "Yusuf Khan" },
-      { name: "Abhay Sharma" },
-      { name: "Anil Rawat" },
-      { name: "Bhuvana Devi", linkedin: "https://linkedin.com" },
-      { name: "Chetan Kulkarni" },
-      { name: "Deepa Nair", linkedin: "https://linkedin.com" },
-      { name: "Girish Rao" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—" },
+      { name: "—" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
+      { name: "—", linkedin: "https://linkedin.com" },
+      { name: "—" },
     ],
   },
 ];
 
 const PRESIDENTS = [
   {
-    name: "Aryan Gupta",
+    name: "—",
+    year: "President (2026-27)",
+    vision: "Leading CodeChef into a new era of technical innovation, making hackathons more accessible and competitive coding a standard across departments.",
+  },
+  {
+    name: "—",
     year: "President (2025-26)",
     vision: "Leading CodeChef into a new era of technical innovation, making hackathons more accessible and competitive coding a standard across departments.",
   },
   {
-    name: "Divyabanu S",
+    name: "—",
     year: "President (2024-25)",
     vision: "Established peer learning groups and expanded our web projects repository to help junior members build real-world applications.",
   },
   {
-    name: "Anmay Dev",
+    name: "—",
     year: "President (2023-24)",
     vision: "Initiated key corporate sponsor relations and established our presence as a premier technical student chapter in the Chennai region.",
   }
@@ -378,36 +387,51 @@ const PRESIDENTS = [
 
 // Helper Component: Board Member Card with custom bracket framing
 function BoardCard({ name, designation, isBlack = false, index }: BoardMember & { index: number }) {
-  const rotationClass = index % 3 === 0 ? "-rotate-2" : index % 3 === 1 ? "rotate-0" : "rotate-2";
-  const bgClass = isBlack ? "bg-black text-white" : "bg-[#F5F0D8] text-black";
-  const bracketColor = isBlack ? "#ffffff" : "#000000";
+  const rotationClass = index % 2 === 0 ? "rotate-[-2deg]" : "rotate-[4deg]";
+  const bgClass = isBlack ? "bg-black text-white" : "bg-[#F6F4D8] text-[#113B8D]";
+  const pinClass = isBlack ? "bg-white border-gray-300" : "bg-gray-100 border-gray-500";
+  const avatarBg = isBlack ? "bg-neutral-800 border-white" : "bg-gray-300 border-gray-500";
 
   return (
     <motion.div
       className={`
-        relative ${bgClass} border-[3px] border-black rounded-[8px] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] 
-        flex flex-col items-center justify-center text-center select-none ${rotationClass} 
-        w-full min-h-[180px] sm:min-h-[200px] transition-all duration-300
+        relative w-[170px] h-[240px] p-4 shadow-[8px_8px_0px_rgba(0,0,0,0.25)] border-[2.5px] border-black
+        transition-all duration-300 cursor-pointer flex flex-col items-center select-none ${rotationClass} ${bgClass}
       `}
       whileHover={{ y: -8, rotate: 0 }}
     >
-      <CornerBrackets color={bracketColor} />
-      
-      {/* LinkedIn link top right */}
-      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="absolute top-4 right-4 opacity-75 hover:opacity-100 transition-opacity">
-        <LinkedInIcon />
-      </a>
+      {/* Pin */}
+      <div className={`absolute top-2 right-2 w-3 h-3 rounded-full border ${pinClass}`} />
 
       {/* Profile Avatar Placeholder */}
-      <div className={`w-14 h-14 rounded-full border-2 ${isBlack ? 'border-white bg-neutral-800' : 'border-black bg-[#5878AF]/25'} flex items-end justify-center overflow-hidden mb-3`}>
-        <svg viewBox="0 0 100 100" className={`w-12 h-12 ${isBlack ? 'text-neutral-500' : 'text-[#5878AF]'}`} fill="currentColor">
+      <div className={`w-20 h-20 rounded-sm border-2 ${avatarBg} flex items-end justify-center overflow-hidden mt-3`}>
+        <svg viewBox="0 0 100 100" className={`w-16 h-16 ${isBlack ? 'text-neutral-500' : 'text-neutral-400'}`} fill="currentColor">
           <circle cx="50" cy="38" r="18" />
           <path d="M 15,85 C 15,62 30,55 50,55 C 70,55 85,62 85,85 Z" />
         </svg>
       </div>
 
-      <h3 className="font-bebas text-2xl tracking-wider uppercase font-bold leading-tight">{name}</h3>
-      <p className={`font-sans text-xs font-bold mt-1 ${isBlack ? 'text-neutral-400' : 'text-neutral-600'}`}>{designation}</p>
+      {/* Name */}
+      <h3 className="font-bebas text-2xl tracking-wide mt-5 text-center truncate w-full uppercase leading-none">
+        {name}
+      </h3>
+
+      {/* Role */}
+      <p className="font-sans text-xs tracking-wider opacity-80 mt-1.5 font-bold truncate w-full text-center">
+        {designation}
+      </p>
+
+      {/* Linkedin */}
+      <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+        <a 
+          href="https://linkedin.com" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="transition-transform hover:scale-110 text-current opacity-80 hover:opacity-100"
+        >
+          <LinkedInIcon />
+        </a>
+      </div>
     </motion.div>
   );
 }
@@ -620,7 +644,7 @@ function LeadershipBoard() {
               </div>
               <div className="mt-4 pt-2 border-t border-black/10">
                 <h4 className="font-bebas text-xl font-bold uppercase tracking-wider text-black">
-                  Dr. Shridevi S
+                  —
                 </h4>
                 <p className="font-sans text-[10px] text-neutral-500 font-bold uppercase">
                   Faculty Coordinator
@@ -714,14 +738,131 @@ function LeadershipBoard() {
   );
 }
 
+// Helper Component: Interactive 3D Wheel Year Picker
+function WheelYearPicker({
+  years,
+  selectedYear,
+  onChange,
+}: {
+  years: string[];
+  selectedYear: string;
+  onChange: (year: string) => void;
+}) {
+  const activeIdx = years.indexOf(selectedYear);
+
+  return (
+    <div className="relative flex flex-row items-center justify-center gap-8 w-full max-w-sm mx-auto mb-14 select-none z-20">
+      {/* Dashed vertical track on the left of the drum wheel */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-[2px] border-l-2 border-dashed border-white/20 -translate-y-1/2 -z-10" />
+
+      {/* Scroll controls (stacked vertically) */}
+      <div className="flex flex-col gap-4 items-center justify-center">
+        {/* Scroll Up Button */}
+        <button
+          onClick={() => {
+            if (activeIdx > 0) onChange(years[activeIdx - 1]);
+          }}
+          disabled={activeIdx === 0}
+          className={`w-9 h-9 rounded-full border-[2px] border-black bg-[#F5F0D8] text-black flex items-center justify-center shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] hover:bg-[#eae3c4] active:translate-y-[1px] active:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer z-40 ${
+            activeIdx === 0 ? "opacity-35 cursor-not-allowed" : ""
+          }`}
+          aria-label="Previous Year"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
+            <polyline points="18 15 12 9 6 15" />
+          </svg>
+        </button>
+
+        {/* Scroll Down Button */}
+        <button
+          onClick={() => {
+            if (activeIdx < years.length - 1) onChange(years[activeIdx + 1]);
+          }}
+          disabled={activeIdx === years.length - 1}
+          className={`w-9 h-9 rounded-full border-[2px] border-black bg-[#F5F0D8] text-black flex items-center justify-center shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] hover:bg-[#eae3c4] active:translate-y-[1px] active:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer z-40 ${
+            activeIdx === years.length - 1 ? "opacity-35 cursor-not-allowed" : ""
+          }`}
+          aria-label="Next Year"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+      </div>
+
+      {/* The 3D Vertical Wheel Container */}
+      <div 
+        className="relative flex flex-col items-center justify-center h-48 w-48 overflow-visible"
+        style={{ perspective: "800px" }}
+      >
+        {years.map((year, idx) => {
+          const offset = idx - activeIdx;
+          
+          // Only render items within a 2-step visibility range to form a clean vertical drum
+          if (Math.abs(offset) > 2) return null;
+
+          // Compute dynamic positioning styles for vertical rotation (along X-axis)
+          const yTranslation = offset * 46; // vertical offset spacing
+          const zDepth = -Math.abs(offset) * 55; // 3D depth
+          const rotationX = -offset * 25; // rotation angle along X axis
+          const scaleFactor = 1 - Math.abs(offset) * 0.15; // scaling down distant items
+          const opacityVal = Math.max(0, 1 - Math.abs(offset) * 0.45); // fading out distant items
+
+          return (
+            <motion.div
+              key={year}
+              animate={{
+                y: yTranslation,
+                z: zDepth,
+                rotateX: rotationX,
+                scale: scaleFactor,
+                opacity: opacityVal,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 24,
+              }}
+              onClick={() => {
+                if (Math.abs(offset) <= 1) onChange(year);
+              }}
+              className={`
+                absolute cursor-pointer font-bebas text-xl sm:text-2xl tracking-widest uppercase px-5 py-1.5 rounded-md border-[2.5px] border-black text-center transition-colors duration-200 w-36
+                ${offset === 0
+                  ? "bg-black text-white shadow-[4px_4px_0px_0px_rgba(255,255,255,0.4)] z-30 font-bold"
+                  : "bg-[#F5F0D8] text-black hover:bg-[#eae3c4] shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] z-10"
+                }
+                ${Math.abs(offset) > 1 ? "pointer-events-none" : ""}
+              `}
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              {year}
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Wheel pointer Indicator */}
+      <div className="flex flex-row items-center gap-1.5 z-10 border-l border-black/10 pl-4 h-12">
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-black rotate-90">
+          <path d="M12 3l6 6H6z" />
+        </svg>
+        <span className="font-sans text-[9px] text-white/50 tracking-wider font-extrabold uppercase mt-0.5">
+          Year
+        </span>
+      </div>
+    </div>
+  );
+}
+
 // Main Page Component
 export default function TeamPage() {
   const [activeTab, setActiveTab] = useState<"board" | "departments">("board");
-  const [selectedYear, setSelectedYear] = useState<string>("2025-26");
+  const [selectedYear, setSelectedYear] = useState<string>("2026-27");
   const [selectedDept, setSelectedDept] = useState<Department | null>(null);
 
   // Retrieve board members and department leads based on selected year
-  const activeYearData = YEAR_DATA[selectedYear] || YEAR_DATA["2025-26"];
+  const activeYearData = YEAR_DATA[selectedYear] || YEAR_DATA["2026-27"];
 
   return (
     <main className="w-full min-h-screen bg-[#5878AF] relative flex flex-col items-center pt-8 overflow-hidden select-none">
@@ -783,22 +924,12 @@ export default function TeamPage() {
               transition={{ duration: 0.3 }}
               className="flex flex-col items-center w-full"
             >
-              {/* Year Selector row */}
-              <div className="flex justify-center gap-4 mb-12">
-                {Object.keys(YEAR_DATA).map((year) => (
-                  <button
-                    key={year}
-                    onClick={() => setSelectedYear(year)}
-                    className={`px-6 py-2.5 font-bebas text-lg tracking-widest uppercase rounded-lg border-2 border-black transition-all duration-300 cursor-pointer ${
-                      selectedYear === year
-                        ? "bg-black text-white shadow-[3px_3px_0px_0px_rgba(255,255,255,0.4)] scale-105"
-                        : "bg-white text-black hover:bg-neutral-100 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-                    }`}
-                  >
-                    {year}
-                  </button>
-                ))}
-              </div>
+              {/* Wheel Picker Year Selector */}
+              <WheelYearPicker
+                years={Object.keys(YEAR_DATA)}
+                selectedYear={selectedYear}
+                onChange={setSelectedYear}
+              />
 
               {/* Executive Board segment */}
               <h3 className="font-bebas text-3xl tracking-widest text-white uppercase font-bold mb-6 text-center">
