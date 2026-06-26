@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { client } from "@/lib/sanity";
+import { client } from "@/lib/sanityClient";
 
 const alumniCards = [
   {

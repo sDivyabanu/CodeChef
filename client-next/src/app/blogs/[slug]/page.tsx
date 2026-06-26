@@ -4,21 +4,41 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Loader2, ArrowLeft } from "lucide-react";
 import Footer from "@/components/Footer/Footer";
-import { client, getBlockText } from "@/lib/sanity";
+import { BlogPost, slugify, portableTextToPlainText } from "../blogsData";
+import { client } from "@/lib/sanityClient";
 
-const slugify = (text: string) => {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)+/g, "");
-};
+// Fetch single blog by slug from Sanity
+async function fetchBlogBySlugFromSanity(slug: string): Promise<BlogPost | null> {
+  try {
+    const query = `*[_type == "blogs"]`;
+    const blogs = await client.fetch(query);
+    if (Array.isArray(blogs) && blogs.length > 0) {
+      const found = blogs.find((b: any) => slugify(b.heading || "") === slug);
+      if (found) {
+        return {
+          id: found._id,
+          title: found.heading || "Untitled Blog",
+          about: found.about || "",
+          content: portableTextToPlainText(found.blog),
+          date: found.date || new Date().toISOString().split("T")[0],
+          imageUrl: found.imageUrl || "/images/codechef_team_photo.png",
+          category: "TECH & INSIGHTS",
+          icon: "terminal",
+        };
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching blog from Sanity:", error);
+  }
+  return null;
+}
 
 export default function BlogDetailPage() {
   const params = useParams();
   const router = useRouter();
   const slug = params.slug as string;
 
-  const [blog, setBlog] = useState<any | null>(null);
+  const [blog, setBlog] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,28 +46,9 @@ export default function BlogDetailPage() {
     
     const loadBlogData = async () => {
       setLoading(true);
-      try {
-        const data = await client.fetch('*[_type == "blogs"]');
-        const matched = (data || []).find((b: any) => slugify(b.heading) === slug);
-        if (matched) {
-          setBlog({
-            id: matched._id,
-            category: "ARTICLE",
-            title: matched.heading,
-            date: matched.date,
-            about: matched.about,
-            content: getBlockText(matched.blog),
-            imageUrl: matched.imageUrl,
-          });
-        } else {
-          setBlog(null);
-        }
-      } catch (err) {
-        console.error("Error fetching blog details:", err);
-        setBlog(null);
-      } finally {
-        setLoading(false);
-      }
+      const data = await fetchBlogBySlugFromSanity(slug);
+      setBlog(data);
+      setLoading(false);
     };
 
     loadBlogData();
@@ -93,23 +94,18 @@ export default function BlogDetailPage() {
               >
                 BLOG
               </h1>
-              {blog.date && (
-                <p className="text-[#FEFED7]/80 font-mono text-sm tracking-widest uppercase mt-2">
-                  {blog.category} &nbsp;✦&nbsp; {new Date(blog.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-                </p>
-              )}
+              <p className="text-[#FEFED7]/80 font-mono text-sm tracking-widest uppercase mt-2">
+                {blog.category} &nbsp;✦&nbsp; {new Date(blog.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+              </p>
             </div>
 
-            {blog.imageUrl && (
-              <section className="mb-14 overflow-hidden border-2 border-black/10 shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-black/25 flex justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={blog.imageUrl}
-                  alt={blog.title}
-                  className="w-full h-auto max-h-[699px] object-cover"
-                />
-              </section>
-            )}
+            <section className="mb-14 overflow-hidden border-2 border-black/10 shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-black/25">
+              <img
+                src={blog.imageUrl || "/images/codechef_team_photo.png"}
+                alt={blog.title}
+                className="w-full h-auto max-h-[699px] object-cover"
+              />
+            </section>
 
             <div className="mb-8">
               <h2 className="font-bebas text-[#FEFED7] text-4xl md:text-6xl tracking-wide leading-tight uppercase">
@@ -118,7 +114,7 @@ export default function BlogDetailPage() {
               <div className="w-20 h-1 bg-[#FEFED7] mt-3" />
             </div>
 
-            <article className="text-white font-cera text-xl md:text-[32px] md:leading-[45px] tracking-wide font-light max-w-[1280px] mx-auto mt-8 mb-16 whitespace-pre-line select-text text-justify">
+            <article className="text-white font-cera text-base md:text-2xl leading-relaxed md:leading-[38px] tracking-wide font-light max-w-[1280px] mx-auto mt-8 mb-16 whitespace-pre-line select-text text-justify">
               {blog.content}
             </article>
 
