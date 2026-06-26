@@ -208,8 +208,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Blue Strip */}
-      <div className="h-2.5 w-full bg-[#1b82cf]" />
     </footer>
   );
 }

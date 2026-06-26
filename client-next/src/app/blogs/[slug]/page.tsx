@@ -4,16 +4,13 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Loader2, ArrowLeft } from "lucide-react";
 import Footer from "@/components/Footer/Footer";
-import { BlogPost, ALL_BLOGS_DATA, slugify } from "../blogsData";
+import { client, getBlockText } from "@/lib/sanity";
 
-// asynchronous API fetch by slug
-const dummyFetchBlogBySlug = (slug: string): Promise<BlogPost | undefined> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const matched = ALL_BLOGS_DATA.find((b) => slugify(b.title) === slug);
-      resolve(matched);
-    }, 600);
-  });
+const slugify = (text: string) => {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
 };
 
 export default function BlogDetailPage() {
@@ -21,7 +18,7 @@ export default function BlogDetailPage() {
   const router = useRouter();
   const slug = params.slug as string;
 
-  const [blog, setBlog] = useState<BlogPost | null>(null);
+  const [blog, setBlog] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,9 +26,28 @@ export default function BlogDetailPage() {
     
     const loadBlogData = async () => {
       setLoading(true);
-      const data = await dummyFetchBlogBySlug(slug);
-      setBlog(data || null);
-      setLoading(false);
+      try {
+        const data = await client.fetch('*[_type == "blogs"]');
+        const matched = (data || []).find((b: any) => slugify(b.heading) === slug);
+        if (matched) {
+          setBlog({
+            id: matched._id,
+            category: "ARTICLE",
+            title: matched.heading,
+            date: matched.date,
+            about: matched.about,
+            content: getBlockText(matched.blog),
+            imageUrl: matched.imageUrl,
+          });
+        } else {
+          setBlog(null);
+        }
+      } catch (err) {
+        console.error("Error fetching blog details:", err);
+        setBlog(null);
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadBlogData();
@@ -77,18 +93,23 @@ export default function BlogDetailPage() {
               >
                 BLOG
               </h1>
-              <p className="text-[#FEFED7]/80 font-mono text-sm tracking-widest uppercase mt-2">
-                {blog.category} &nbsp;✦&nbsp; {new Date(blog.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-              </p>
+              {blog.date && (
+                <p className="text-[#FEFED7]/80 font-mono text-sm tracking-widest uppercase mt-2">
+                  {blog.category} &nbsp;✦&nbsp; {new Date(blog.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                </p>
+              )}
             </div>
 
-            <section className="mb-14 overflow-hidden border-2 border-black/10 shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-black/25">
-              <img
-                src="/images/codechef_team_photo.png"
-                alt="CodeChef Team"
-                className="w-full h-auto max-h-[699px] object-cover"
-              />
-            </section>
+            {blog.imageUrl && (
+              <section className="mb-14 overflow-hidden border-2 border-black/10 shadow-[0_12px_32px_rgba(0,0,0,0.15)] bg-black/25 flex justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={blog.imageUrl}
+                  alt={blog.title}
+                  className="w-full h-auto max-h-[699px] object-cover"
+                />
+              </section>
+            )}
 
             <div className="mb-8">
               <h2 className="font-bebas text-[#FEFED7] text-4xl md:text-6xl tracking-wide leading-tight uppercase">

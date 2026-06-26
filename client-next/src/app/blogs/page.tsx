@@ -5,20 +5,19 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Cpu, Loader2, ArrowUpRight } from "lucide-react";
 import Footer from "@/components/Footer/Footer";
-import { BlogPost, ALL_BLOGS_DATA, slugify } from "./blogsData";
+import Image from "next/image";
+import { client } from "@/lib/sanity";
 
-// asynchronous API call
-const dummyFetchBlogs = (): Promise<BlogPost[]> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(ALL_BLOGS_DATA);
-    }, 800);
-  });
+const slugify = (text: string) => {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
 };
 
 export default function BlogsPage() {
   const router = useRouter();
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [visibleCount, setVisibleCount] = useState(4);
@@ -27,8 +26,18 @@ export default function BlogsPage() {
     const loadBlogs = async () => {
       try {
         setLoading(true);
-        const data = await dummyFetchBlogs();
-        setBlogs(data);
+        const data = await client.fetch('*[_type == "blogs"] | order(date desc)');
+        // Map keys to match the component's expected fields
+        const mappedData = (data || []).map((b: any) => ({
+          id: b._id,
+          category: "ARTICLE",
+          title: b.heading,
+          date: b.date,
+          about: b.about,
+          imageUrl: b.imageUrl,
+          icon: "terminal" as const,
+        }));
+        setBlogs(mappedData);
       } catch (err) {
         console.error("Error retrieving blogs: ", err);
         setError("Failed to retrieve blogs. Please try again later.");
@@ -116,7 +125,7 @@ export default function BlogsPage() {
                     </div>
 
                     <div className="my-6">
-                      <h2 className="font-bebas text-white text-5xl md:text-8xl tracking-wide leading-tight">
+                      <h2 className="font-bebas text-white text-5xl md:text-8xl tracking-wide leading-tight uppercase">
                         {featuredBlog.title}
                       </h2>
                       <p className="mt-4 text-white/80 font-sans text-base md:text-lg max-w-3xl leading-relaxed">
@@ -127,7 +136,7 @@ export default function BlogsPage() {
                     <div className="mt-8 flex justify-between items-end">
                       <button
                         onClick={() => router.push(`/blogs/${slugify(featuredBlog.title)}`)}
-                        className="group flex items-center gap-2 px-8 py-3 bg-[#FEFED7] border-2 border-[#2C2C2C] text-[#1E1E1E] font-bebas text-2xl md:text-3xl rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg"
+                        className="group flex items-center gap-2 px-8 py-3 bg-[#FEFED7] border-2 border-[#2C2C2C] text-[#1E1E1E] font-bebas text-2xl md:text-3xl rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg cursor-pointer"
                       >
                         READ
                         <ArrowUpRight className="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -157,9 +166,14 @@ export default function BlogsPage() {
                       className="bg-[#FEFED7] w-full max-w-[559px] h-[418px] p-6 flex flex-col justify-between border-2 border-black/10 shadow-[10px_4px_4px_rgba(0,0,0,0.25)] hover:shadow-[12px_6px_6px_rgba(0,0,0,0.35)] hover:-translate-y-1 transition-all duration-300 relative text-black"
                     >
                       <div>
-                        <div className="w-full max-w-[466px] h-[181px] mx-auto bg-[#D8D6D7] border-[1.5px] border-black flex items-center justify-center relative shadow-inner">
-                          {blog.icon === "terminal" ? (
-                            <span className="font-mono text-5xl font-bold text-[#1E1E1E] tracking-tighter select-none">&gt;_</span>
+                        <div className="w-full max-w-[466px] h-[181px] mx-auto bg-[#D8D6D7] border-[1.5px] border-black flex items-center justify-center relative shadow-inner overflow-hidden">
+                          {blog.imageUrl ? (
+                            <Image
+                              src={blog.imageUrl}
+                              alt={blog.title}
+                              fill
+                              className="object-cover"
+                            />
                           ) : (
                             <Cpu className="w-12 h-12 text-[#1E1E1E]" strokeWidth={2.5} />
                           )}
@@ -180,7 +194,7 @@ export default function BlogsPage() {
                       <div className="flex justify-end px-4 mb-2">
                         <button
                           onClick={() => router.push(`/blogs/${slugify(blog.title)}`)}
-                          className="px-[18px] py-[6px] bg-[#060606] text-white font-bebas text-[16px] leading-[19px] rounded-[50px] hover:bg-[#1C1C1C] transition-all duration-300"
+                          className="px-[18px] py-[6px] bg-[#060606] text-white font-bebas text-[16px] leading-[19px] rounded-[50px] hover:bg-[#1C1C1C] transition-all duration-300 cursor-pointer"
                         >
                           READ MORE
                         </button>
@@ -202,10 +216,10 @@ export default function BlogsPage() {
               )}
             </>
           )}
+
         </div>
       </main>
-      
-      {/* Footer component */}
+
       <Footer />
     </>
   );
