@@ -32,7 +32,7 @@ export default function BlogsPage() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
     const loadBlogs = async () => {
@@ -56,7 +56,7 @@ export default function BlogsPage() {
   const visibleBlogs = standardBlogs.slice(0, visibleCount);
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => Math.min(prev + 2, standardBlogs.length));
+    setVisibleCount((prev) => Math.min(prev + 3, standardBlogs.length));
   };
 
   return (
@@ -163,8 +163,8 @@ export default function BlogsPage() {
               )}
 
               {/* Blogs Grid */}
-              <section className="mb-24 flex justify-center">
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-16 justify-items-center w-full max-w-[1200px]">
+              <section className="max-w-[1466px] w-[90%] mx-auto mb-24 z-10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
                   {visibleBlogs.map((blog) => (
                     <motion.div
                       key={blog.id}
@@ -177,7 +177,6 @@ export default function BlogsPage() {
                       <div>
                         <div className="w-full max-w-[466px] h-[181px] mx-auto bg-[#D8D6D7] border-[1.5px] border-black flex items-center justify-center relative shadow-inner overflow-hidden">
                           {blog.imageUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
                             <img
                               src={blog.imageUrl}
                               alt={blog.title}
