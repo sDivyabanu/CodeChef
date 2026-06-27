@@ -1,41 +1,135 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import LeadCard from "./LeadCard";
+import { client } from "@/lib/sanityClient";
+import { Loader2 } from "lucide-react";
+
+interface SanityLead {
+  _id: string;
+  name: string;
+  email?: string;
+  batch?: string;
+  imageUrl?: string;
+  imageHashCode?: string;
+  linkedin?: string;
+  position?: string;
+}
 
 const years = ["2023-24", "2024-25", "2025-26", "2026-27"];
 
 export default function Board() {
-  const [selectedYear, setSelectedYear] = useState("2025-26");
+  const [selectedYear, setSelectedYear] = useState("2026-27");
+  const [leads, setLeads] = useState<SanityLead[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const activeYearRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (!loading && activeYearRef.current) {
+      const timer = setTimeout(() => {
+        activeYearRef.current?.scrollIntoView({
+          behavior: "auto",
+          block: "center",
+        });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    async function fetchLeads() {
+      try {
+        setLoading(true);
+        setError(false);
+        const query = `*[_type == "clubLeads"]`;
+        const data = await client.fetch(query);
+        if (Array.isArray(data)) {
+          setLeads(data);
+        } else {
+          setError(true);
+        }
+      } catch (err) {
+        console.error("Error fetching leads from Sanity:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchLeads();
+  }, []);
+
+  const targetBatch = selectedYear.split("-")[0];
+
+  // Filter leads for the selected batch
+  const filteredLeads = leads.filter((lead) => {
+    if (!lead.batch) return false;
+    const batchClean = lead.batch.trim();
+    return batchClean === targetBatch || batchClean.startsWith(targetBatch);
+  });
+
+  const getLeadsByPosition = (positionNames: string[]) => {
+    return filteredLeads.filter((lead) => {
+      if (!lead.position) return false;
+      const pos = lead.position.toLowerCase().trim();
+      return positionNames.some((p) => pos === p.toLowerCase().trim());
+    });
+  };
+
+  // Top Leadership
+  const presidents = getLeadsByPosition(["President"]);
+  const vps = getLeadsByPosition(["Vice President"]);
+  const genSecs = getLeadsByPosition(["General Secretary"]);
+  const coSecs = getLeadsByPosition(["Co-Secretary"]);
+
+  // Departments
+  const cpLeads = getLeadsByPosition(["Technical (CP)", "Competitive Programming"]);
+  const webLeads = getLeadsByPosition(["Web Development"]);
+  const projectsLeads = getLeadsByPosition(["Projects", "Projects & Web Dev"]);
+  const designLeads = getLeadsByPosition(["Design"]);
+  const socialLeads = getLeadsByPosition(["Social Media & Content", "Social Media"]);
+  const outreachLeads = getLeadsByPosition(["Outreach"]);
+  const eventLeads = getLeadsByPosition(["Event Management"]);
+  const financeLeads = getLeadsByPosition(["Finance"]);
+  const marketingLeads = getLeadsByPosition(["Marketing & Sponsorship", "Marketing"]);
+
+  const hasTopLeads = presidents.length > 0 || vps.length > 0 || genSecs.length > 0 || coSecs.length > 0;
 
   return (
-    <section className="relative min-h-screen px-6 md:px-12 py-12">
+    <section className="relative min-h-screen max-w-[1466px] w-[90%] mx-auto py-12">
       {/* Title */}
-      <h1 className="text-center text-white text-7xl tracking-wider mb-10">
+      <h1 className="text-center text-white text-7xl font-bold tracking-wider mb-10">
         LEADS
       </h1>
 
       {/* Wheel Picker */}
       <div className="flex justify-center mb-16 no-scrollbar">
-        <div className="h-[220px] overflow-y-auto snap-y snap-mandatory no-scrollbar text-center ">
+        <div className="h-[220px] overflow-y-auto snap-y snap-mandatory no-scrollbar text-center px-4">
           {years.map((year) => (
             <button
               key={year}
-              onClick={() => setSelectedYear(year)}
+              ref={selectedYear === year ? activeYearRef : null}
+              onClick={(e) => {
+                setSelectedYear(year);
+                e.currentTarget.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }}
               className={`
-                 h-[70px]
-        flex
-        items-center
-        justify-center
-        snap-center
-        cursor-pointer
-        transition-all
-        duration-300
-        
+                h-[70px]
+                flex
+                items-center
+                justify-center
+                snap-center
+                cursor-pointer
+                transition-all
+                duration-300
                 ${
                   selectedYear === year
-                    ? "text-white text-5xl scale-110"
-                    : "text-white/50 text-3xl"
+                    ? "text-white text-5xl scale-110 font-bold"
+                    : "text-white/50 text-3xl font-medium hover:text-white/80"
                 }
               `}
             >
@@ -45,77 +139,255 @@ export default function Board() {
         </div>
       </div>
 
-      {/* Top Leadership */}
-      <div className="flex flex-wrap justify-center items-start gap-8 mb-20">
-        <LeadCard role="Vice President" />
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-24 gap-4">
+          <Loader2 className="w-12 h-12 text-white animate-spin" />
+          <p className="text-xl font-semibold tracking-wider text-white">Loading Leads...</p>
+        </div>
+      ) : error ? (
+        <div className="flex flex-col items-center justify-center py-24">
+          <p className="text-2xl font-bold text-red-100">Failed to load leads from the server.</p>
+        </div>
+      ) : filteredLeads.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-24">
+          <p className="text-2xl font-semibold text-white/80 tracking-wide">
+            No leads data found for the selected batch ({selectedYear}).
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* Top Leadership */}
+          {hasTopLeads && (
+            <div className="flex flex-wrap justify-center items-start gap-8 mb-20">
+              {vps.map((lead) => (
+                <LeadCard
+                  key={lead._id}
+                  name={lead.name}
+                  imageUrl={lead.imageUrl}
+                  linkedin={lead.linkedin}
+                  role="Vice President"
+                />
+              ))}
 
-        <LeadCard role="President" featured />
+              {presidents.map((lead) => (
+                <LeadCard
+                  key={lead._id}
+                  name={lead.name}
+                  imageUrl={lead.imageUrl}
+                  linkedin={lead.linkedin}
+                  role="President"
+                  featured
+                />
+              ))}
 
-        <LeadCard role="General Secretary" />
+              {genSecs.map((lead) => (
+                <LeadCard
+                  key={lead._id}
+                  name={lead.name}
+                  imageUrl={lead.imageUrl}
+                  linkedin={lead.linkedin}
+                  role="General Secretary"
+                />
+              ))}
 
-        <LeadCard role="Co-Secretary" />
-      </div>
+              {coSecs.map((lead) => (
+                <LeadCard
+                  key={lead._id}
+                  name={lead.name}
+                  imageUrl={lead.imageUrl}
+                  linkedin={lead.linkedin}
+                  role="Co-Secretary"
+                />
+              ))}
+            </div>
+          )}
 
-      {/* CP */}
-      <DepartmentRow title="Technical (CP)">
-        <LeadCard role="Technical (CP)" />
-        <LeadCard role="Technical (CP)" featured />
-        <LeadCard role="Technical (CP)" />
-      </DepartmentRow>
+          {/* CP */}
+          {cpLeads.length > 0 && (
+            <DepartmentRow title="Technical (CP)">
+              {cpLeads.map((lead, idx) => (
+                <LeadCard
+                  key={lead._id}
+                  name={lead.name}
+                  imageUrl={lead.imageUrl}
+                  linkedin={lead.linkedin}
+                  role={lead.position || "Technical (CP)"}
+                  featured={idx === 1}
+                />
+              ))}
+            </DepartmentRow>
+          )}
 
-     <div className="grid md:grid-cols-2 gap-8 mb-16">
-  <DepartmentRow title="Web Development">
-    <LeadCard role="Web Development" />
-    <LeadCard role="Web Development" featured />
-  </DepartmentRow>
+          {/* Web Dev & Projects */}
+          {(webLeads.length > 0 || projectsLeads.length > 0) && (
+            <div className="grid md:grid-cols-2 gap-8 mb-16">
+              {webLeads.length > 0 ? (
+                <DepartmentRow title="Web Development">
+                  {webLeads.map((lead, idx) => (
+                    <LeadCard
+                      key={lead._id}
+                      name={lead.name}
+                      imageUrl={lead.imageUrl}
+                      linkedin={lead.linkedin}
+                      role={lead.position || "Web Development"}
+                      featured={idx === 1}
+                    />
+                  ))}
+                </DepartmentRow>
+              ) : (
+                <div />
+              )}
 
-  <DepartmentRow title="Projects">
-    <LeadCard role="Projects" />
-  </DepartmentRow>
-</div>
-<div className="grid md:grid-cols-2 gap-8 mb-16">
-      {/* Design */}
-      <DepartmentRow title="Design">
-        <LeadCard role="Design" />
-        <LeadCard role="Design" featured />
-      </DepartmentRow>
+              {projectsLeads.length > 0 ? (
+                <DepartmentRow title="Projects">
+                  {projectsLeads.map((lead, idx) => (
+                    <LeadCard
+                      key={lead._id}
+                      name={lead.name}
+                      imageUrl={lead.imageUrl}
+                      linkedin={lead.linkedin}
+                      role={lead.position || "Projects"}
+                      featured={idx === 1}
+                    />
+                  ))}
+                </DepartmentRow>
+              ) : (
+                <div />
+              )}
+            </div>
+          )}
 
-      {/* Social */}
-      <DepartmentRow title="Social Media & Content">
-        <LeadCard role="Social Media" />
-        <LeadCard role="Social Media" featured />
-      </DepartmentRow>
-</div>
-<div className="grid md:grid-cols-2 gap-8 mb-16">
-      {/* Outreach */}
-      <DepartmentRow title="Outreach">
-        <LeadCard role="Outreach" />
-        <LeadCard role="Outreach" featured />
-      </DepartmentRow>
+          {/* Design & Social Media */}
+          {(designLeads.length > 0 || socialLeads.length > 0) && (
+            <div className="grid md:grid-cols-2 gap-8 mb-16">
+              {designLeads.length > 0 ? (
+                <DepartmentRow title="Design">
+                  {designLeads.map((lead, idx) => (
+                    <LeadCard
+                      key={lead._id}
+                      name={lead.name}
+                      imageUrl={lead.imageUrl}
+                      linkedin={lead.linkedin}
+                      role={lead.position || "Design"}
+                      featured={idx === 1}
+                    />
+                  ))}
+                </DepartmentRow>
+              ) : (
+                <div />
+              )}
 
-      {/* Event */}
-      <DepartmentRow title="Event Management">
-        <LeadCard role="Event Management" />
-        <LeadCard role="Event Management" featured />
-      </DepartmentRow>
-      </div>
+              {socialLeads.length > 0 ? (
+                <DepartmentRow title="Social Media & Content">
+                  {socialLeads.map((lead, idx) => (
+                    <LeadCard
+                      key={lead._id}
+                      name={lead.name}
+                      imageUrl={lead.imageUrl}
+                      linkedin={lead.linkedin}
+                      role={lead.position || "Social Media & Content"}
+                      featured={idx === 1}
+                    />
+                  ))}
+                </DepartmentRow>
+              ) : (
+                <div />
+              )}
+            </div>
+          )}
+
+          {/* Outreach & Event Management */}
+          {(outreachLeads.length > 0 || eventLeads.length > 0) && (
+            <div className="grid md:grid-cols-2 gap-8 mb-16">
+              {outreachLeads.length > 0 ? (
+                <DepartmentRow title="Outreach">
+                  {outreachLeads.map((lead, idx) => (
+                    <LeadCard
+                      key={lead._id}
+                      name={lead.name}
+                      imageUrl={lead.imageUrl}
+                      linkedin={lead.linkedin}
+                      role={lead.position || "Outreach"}
+                      featured={idx === 1}
+                    />
+                  ))}
+                </DepartmentRow>
+              ) : (
+                <div />
+              )}
+
+              {eventLeads.length > 0 ? (
+                <DepartmentRow title="Event Management">
+                  {eventLeads.map((lead, idx) => (
+                    <LeadCard
+                      key={lead._id}
+                      name={lead.name}
+                      imageUrl={lead.imageUrl}
+                      linkedin={lead.linkedin}
+                      role={lead.position || "Event Management"}
+                      featured={idx === 1}
+                    />
+                  ))}
+                </DepartmentRow>
+              ) : (
+                <div />
+              )}
+            </div>
+          )}
+
+          {/* Finance & Marketing */}
+          {(financeLeads.length > 0 || marketingLeads.length > 0) && (
+            <div className="grid md:grid-cols-2 gap-8 mb-16">
+              {financeLeads.length > 0 ? (
+                <DepartmentRow title="Finance">
+                  {financeLeads.map((lead, idx) => (
+                    <LeadCard
+                      key={lead._id}
+                      name={lead.name}
+                      imageUrl={lead.imageUrl}
+                      linkedin={lead.linkedin}
+                      role={lead.position || "Finance"}
+                      featured={idx === 1}
+                    />
+                  ))}
+                </DepartmentRow>
+              ) : (
+                <div />
+              )}
+
+              {marketingLeads.length > 0 ? (
+                <DepartmentRow title="Marketing & Sponsorship">
+                  {marketingLeads.map((lead, idx) => (
+                    <LeadCard
+                      key={lead._id}
+                      name={lead.name}
+                      imageUrl={lead.imageUrl}
+                      linkedin={lead.linkedin}
+                      role={lead.position || "Marketing & Sponsorship"}
+                      featured={idx === 1}
+                    />
+                  ))}
+                </DepartmentRow>
+              ) : (
+                <div />
+              )}
+            </div>
+          )}
+        </>
+      )}
     </section>
   );
 }
-
 
 interface DepartmentRowProps {
   title: string;
   children: React.ReactNode;
 }
 
-function DepartmentRow({
-  title,
-  children,
-}: DepartmentRowProps) {
+function DepartmentRow({ title, children }: DepartmentRowProps) {
   return (
     <div className="mb-16">
-      <h2 className="text-center text-white text-5xl tracking-wide mb-8">
+      <h2 className="text-center text-white text-5xl font-bold tracking-wide mb-8">
         {title}
       </h2>
 

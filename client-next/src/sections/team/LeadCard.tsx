@@ -1,16 +1,41 @@
 "use client";
 
+import React from "react";
 import { User } from "lucide-react";
 
 interface LeadCardProps {
+  name: string;
+  imageUrl?: string;
+  linkedin?: string;
   role: string;
   featured?: boolean;
 }
 
+const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.25"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect x="2" y="9" width="4" height="12" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+);
+
 export default function LeadCard({
+  name,
+  imageUrl,
+  linkedin,
   role,
   featured = false,
 }: LeadCardProps) {
+  const [imgError, setImgError] = React.useState(false);
+
   return (
     <div
       className={`
@@ -53,60 +78,71 @@ export default function LeadCard({
 
       {/* Profile */}
       <div className="flex justify-center mt-3">
-        <div
-          className={`
-            w-20
-            h-20
-            rounded-sm
-            border-2
-
-            ${
-              featured
-                ? "bg-neutral-800 border-white"
-                : "bg-gray-300 border-gray-500"
-            }
-          `}
-        />
+        {imageUrl && !imgError ? (
+          <img
+            src={imageUrl}
+            alt={name}
+            onError={() => setImgError(true)}
+            className={`
+              w-20
+              h-20
+              rounded-sm
+              border-2
+              object-cover
+              ${
+                featured ? "border-white" : "border-gray-500"
+              }
+            `}
+          />
+        ) : (
+          <div
+            className={`
+              w-20
+              h-20
+              rounded-sm
+              border-2
+              flex items-center justify-center
+              ${
+                featured
+                  ? "bg-neutral-800 border-white text-white/40"
+                  : "bg-gray-300 border-gray-500 text-gray-500"
+              }
+            `}
+          >
+            <User size={32} />
+          </div>
+        )}
       </div>
 
       {/* Name */}
       <h3
-        className={`
-          mt-5
-          text-center
-          text-2xl
-          tracking-wide
-        `}
+        className="mt-5 text-center text-xl font-bold tracking-wide truncate"
+        title={name}
       >
-        Name
+        {name}
       </h3>
 
       {/* Role */}
       <p
-        className={`
-          text-center
-          text-sm
-          tracking-wider
-          opacity-80
-        `}
+        className="text-center text-xs tracking-wider opacity-85 truncate"
+        title={role}
       >
         {role}
       </p>
 
       {/* Linkedin */}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center">
-        <a
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`
-            transition-transform
-            hover:scale-110
-          `}
-        >
-          <User size={22} />
-        </a>
-      </div>
+      {linkedin && (
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+          <a
+            href={linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-transform hover:scale-110 text-inherit"
+          >
+            <LinkedinIcon className="w-5 h-5" />
+          </a>
+        </div>
+      )}
     </div>
   );
 }
