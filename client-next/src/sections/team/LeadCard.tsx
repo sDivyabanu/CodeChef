@@ -77,15 +77,15 @@ export default function LeadCard({
       />
 
       {/* Profile */}
-      <div className="flex justify-center mt-3">
+      <div className="flex justify-center mt-2">
         {imageUrl && !imgError ? (
           <img
             src={imageUrl}
             alt={name}
             onError={() => setImgError(true)}
             className={`
-              w-28
-              h-28
+              w-32
+              h-32
               rounded-sm
               border-2
               object-cover
@@ -97,8 +97,8 @@ export default function LeadCard({
         ) : (
           <div
             className={`
-              w-28
-              h-28
+              w-32
+              h-32
               rounded-sm
               border-2
               flex items-center justify-center
@@ -109,14 +109,14 @@ export default function LeadCard({
               }
             `}
           >
-            <User size={44} />
+            <User size={52} />
           </div>
         )}
       </div>
 
       {/* Name */}
       <h3
-        className="mt-5 text-center text-xl font-bold tracking-wide truncate"
+        className="mt-4 text-center text-xl font-bold tracking-wide truncate"
         title={name}
       >
         {name}
@@ -124,7 +124,7 @@ export default function LeadCard({
 
       {/* Role */}
       <p
-        className="text-center text-sm tracking-wider opacity-85 truncate"
+        className="mt-1 text-center text-sm tracking-wider opacity-85 truncate"
         title={role}
       >
         {role}

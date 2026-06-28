@@ -100,7 +100,7 @@ export default function Board() {
   return (
     <section className="relative min-h-screen max-w-[1466px] w-[90%] mx-auto py-12">
       {/* Title */}
-      <h1 className="text-center text-white text-7xl font-bold tracking-wider mb-10">
+      <h1 className="text-center text-white text-7xl sm:text-8xl md:text-9xl font-teko tracking-widest uppercase mb-10">
         LEADS
       </h1>
 
@@ -447,7 +447,7 @@ interface DepartmentRowProps {
 function DepartmentRow({ title, children }: DepartmentRowProps) {
   return (
     <div className="mb-16">
-      <h2 className="text-center text-white text-5xl font-bold tracking-wide mb-8">
+      <h2 className="text-center text-white text-4xl sm:text-5xl font-teko tracking-widest uppercase mb-8">
         {title}
       </h2>
 

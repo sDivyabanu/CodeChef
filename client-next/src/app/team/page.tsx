@@ -179,27 +179,31 @@ function LeadershipBoard() {
 export default function TeamPage() {
   const [activeTab, setActiveTab] = useState<"board" | "departments">("board");
 
+  // Generate 25 wavy background paths dynamically to cover the entire page scroll height
+  const backgroundPaths = Array.from({ length: 25 }, (_, i) => {
+    const yBase = i * 400 + 100;
+    const isEven = i % 2 === 0;
+    return isEven
+      ? `M -100,${yBase} Q 300,${yBase - 50} 800,${yBase + 20} T 1900,${yBase - 20}`
+      : `M -100,${yBase} Q 400,${yBase + 100} 900,${yBase - 50} T 2100,${yBase + 50}`;
+  });
+
   return (
     <main className="w-full min-h-screen bg-[#5878AF] relative flex flex-col items-center pt-8 overflow-hidden select-none">
       
       {/* Dashed curved paths in the background */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
-        <path 
-          d="M -100,100 Q 300,50 800,120 T 1900,80" 
-          fill="none" 
-          stroke="white" 
-          strokeWidth="4" 
-          strokeDasharray="12 12" 
-          strokeOpacity="0.3"
-        />
-        <path 
-          d="M -100,500 Q 400,600 900,450 T 2100,550" 
-          fill="none" 
-          stroke="white" 
-          strokeWidth="4" 
-          strokeDasharray="12 12" 
-          strokeOpacity="0.3"
-        />
+        {backgroundPaths.map((d, idx) => (
+          <path 
+            key={idx}
+            d={d} 
+            fill="none" 
+            stroke="white" 
+            strokeWidth="4" 
+            strokeDasharray="12 12" 
+            strokeOpacity="0.3"
+          />
+        ))}
       </svg>
 
       {/* Tab Switcher Panel */}
