@@ -152,33 +152,38 @@ function PodiumCard({
         <Avatar rank={rank} />
       </motion.div>
 
-      {/* Stepped Pedestal Box (2D Hand-drawn aesthetic) */}
+      {/* Black Podium Base formed by base2.png (lid) and base1.png (cylinder body) */}
       <div className={`
-        relative flex flex-col items-center justify-center
-        bg-[#F6F4D8] border-4 border-black
-        shadow-[6px_6px_0px_rgba(0,0,0,1)]
-        z-10
-        ${isCenter ? 'h-36 w-36 sm:w-40' : rank === 2 ? 'h-24 w-32 sm:w-36' : 'h-16 w-32 sm:w-36'}
+        relative flex flex-col items-center z-10
+        ${isCenter ? 'w-56' : 'w-48'}
       `}>
-        {/* Subtle Corner brackets inside the pedestal for retro look */}
-        <div className="absolute top-1.5 left-1.5 w-2 h-2 border-t border-l border-black/40 pointer-events-none" />
-        <div className="absolute top-1.5 right-1.5 w-2 h-2 border-t border-r border-black/40 pointer-events-none" />
-        <div className="absolute bottom-1.5 left-1.5 w-2 h-2 border-b border-l border-black/40 pointer-events-none" />
-        <div className="absolute bottom-1.5 right-1.5 w-2 h-2 border-b border-r border-black/40 pointer-events-none" />
-
-        <div className="flex flex-col items-center justify-center h-full">
-          {/* Rank Number */}
-          <span className={`font-teko text-5xl sm:text-6xl leading-none font-bold ${rank === 1 ? 'text-[#EAB308]' : rank === 2 ? 'text-neutral-500' : 'text-amber-700'}`}>
-            {rank}
-          </span>
-          {/* Name Placeholder */}
-          <span className="font-bebas text-sm sm:text-base tracking-widest text-black/60 uppercase leading-none mt-1">
-            {name}
-          </span>
-          {/* Rating Placeholder */}
-          <span className="font-sans text-[10px] tracking-wider text-black/40 font-black mt-0.5">
-            —
-          </span>
+        {/* base2: Top Lid */}
+        <img 
+          src="/images/base2.png" 
+          alt="Podium Top" 
+          className="w-full object-contain relative z-30"
+        />
+        
+        {/* base1: Cylinder Body */}
+        <div className="w-full relative -mt-[9%] z-20">
+          <img 
+            src="/images/base1.png" 
+            alt="Podium Base" 
+            className="w-full object-contain"
+          />
+          
+          {/* Overlay Content */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center pb-2 pt-4">
+            {/* NAME */}
+            <span className="font-bebas text-lg sm:text-xl tracking-widest text-white uppercase leading-none">
+              {name}
+            </span>
+            
+            {/* Stars Placeholder */}
+            <span className="font-sans text-xs tracking-wider text-white/60 font-bold mt-2">
+              —
+            </span>
+          </div>
         </div>
       </div>
     </div>
