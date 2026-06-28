@@ -67,14 +67,14 @@ function LeadAvatar({ lead }: { lead: SanityLead }) {
           src={lead.imageUrl}
           alt={lead.name}
           onError={() => setImgError(true)}
-          className="w-8 h-8 rounded-full border border-[#113B8D]/50 object-cover group-hover:scale-105 transition-transform"
+          className="w-9 h-9 rounded-full border-2 border-black object-cover group-hover:scale-105 transition-transform shadow-[1.5px_1.5px_0px_rgba(0,0,0,1)]"
         />
       ) : (
-        <div className="w-8 h-8 rounded-full border border-[#113B8D]/50 bg-neutral-300 flex items-center justify-center text-xs font-bold text-[#113B8D]">
+        <div className="w-9 h-9 rounded-full border-2 border-black bg-neutral-300 flex items-center justify-center text-xs font-bold text-[#113B8D] shadow-[1.5px_1.5px_0px_rgba(0,0,0,1)]">
           {lead.name.charAt(0).toUpperCase()}
         </div>
       )}
-      <span className="text-xs font-bold group-hover:underline truncate max-w-[120px]">
+      <span className="text-xs font-bold group-hover:underline truncate max-w-[120px] text-black">
         {lead.name}
       </span>
     </a>
@@ -179,7 +179,7 @@ export default function Departments() {
   return (
     <section className="relative min-h-screen max-w-[1466px] w-[90%] mx-auto py-12">
       {/* Title */}
-      <h1 className="text-center text-white text-7xl font-bold tracking-wider mb-16 uppercase">
+      <h1 className="text-center text-white text-7xl sm:text-8xl md:text-9xl font-teko tracking-widest uppercase mb-16">
         DEPARTMENTS
       </h1>
 
@@ -212,15 +212,19 @@ export default function Departments() {
                   relative flex flex-col
                   bg-[#F6F4D8] text-[#113B8D]
                   p-6 md:p-8
-                  shadow-[8px_8px_0px_rgba(0,0,0,0.25)]
+                  border-4 border-black
+                  shadow-[8px_8px_0px_rgba(0,0,0,1)]
                   transition-all duration-300
-                  hover:-translate-y-2 hover:rotate-0
+                  hover:-translate-y-2.5 hover:shadow-[12px_12px_0px_rgba(0,0,0,1)] hover:rotate-0
                   ${rotation}
                 `}
               >
-                <div className="absolute top-3 right-3 w-3 h-3 rounded-full border bg-gray-100 border-gray-500" />
+                {/* Push Pin Head / Tack */}
+                <div className="absolute top-3 right-3 w-4.5 h-4.5 rounded-full bg-red-500 border-2 border-black shadow-[1.5px_1.5px_0px_rgba(0,0,0,1)] flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/70" />
+                </div>
                 <div className="flex justify-between items-start gap-4 mb-4">
-                  <h3 className="text-3xl font-extrabold tracking-wide uppercase leading-tight">
+                  <h3 className="text-3xl sm:text-4xl font-teko tracking-wider uppercase leading-none text-black">
                     {dept.name}
                   </h3>
                   {dept.icon && (
@@ -231,12 +235,12 @@ export default function Departments() {
                     />
                   )}
                 </div>
-                <p className="text-sm font-medium leading-relaxed mb-6 flex-grow opacity-90">
+                <p className="text-sm font-medium leading-relaxed mb-6 flex-grow text-neutral-800">
                   {dept.description}
                 </p>
                 {deptLeads.length > 0 && (
-                  <div className="mb-6 border-t border-[#113B8D]/20 pt-4">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-[#113B8D]/70 mb-3">
+                  <div className="mb-6 border-t-2 border-dashed border-black/20 pt-4">
+                    <h4 className="text-xs font-black uppercase tracking-widest text-neutral-500 mb-3">
                       Leads
                     </h4>
                     <div className="flex flex-wrap gap-4">
@@ -249,7 +253,7 @@ export default function Departments() {
 
                 <button
                   onClick={() => setActiveDept(dept.name)}
-                  className="w-full py-2.5 bg-[#113B8D] text-white hover:bg-black font-extrabold tracking-widest text-xs uppercase shadow-[4px_4px_0px_rgba(0,0,0,0.15)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all mt-auto"
+                  className="w-full py-3 bg-[#113B8D] text-white hover:bg-black font-black tracking-widest text-xs uppercase border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all mt-auto"
                 >
                   {dept.members ? `${dept.members} Members` : "View Members"}
                 </button>
@@ -276,62 +280,76 @@ export default function Departments() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", duration: 0.5 }}
-              className="relative w-full max-w-xl bg-[#F6F4D8] border-4 border-black text-[#113B8D] p-6 md:p-8 shadow-[12px_12px_0px_rgba(0,0,0,1)] z-10 flex flex-col max-h-[90vh]"
+              className="relative w-full max-w-xl bg-[#F6F4D8] border-4 border-black text-black p-6 md:p-8 pt-12 shadow-[12px_12px_0px_rgba(0,0,0,1)] z-10 flex flex-col max-h-[90vh]"
             >
+              {/* Spiral Binder Ring Coil Loops at the top */}
+              <div className="absolute -top-5 left-8 right-8 flex justify-between pointer-events-none z-20">
+                {Array.from({ length: 7 }).map((_, i) => (
+                  <div key={i} className="flex flex-col items-center">
+                    {/* Metallic Loop */}
+                    <div className="w-3 h-10 bg-neutral-800 rounded-full border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,0.15)]" />
+                    {/* Punched Paper Hole */}
+                    <div className="w-3 h-3 rounded-full bg-neutral-900/90 -mt-1.5 border border-black/10" />
+                  </div>
+                ))}
+              </div>
+
               <button
                 onClick={() => setActiveDept(null)}
-                className="absolute top-4 right-4 p-1.5 border-2 border-black hover:bg-black hover:text-white transition-colors"
+                className="absolute top-6 right-6 p-1.5 border-2 border-black bg-white hover:bg-black hover:text-white transition-colors z-30"
               >
                 <X size={18} />
               </button>
-              <h2 className="text-3xl font-extrabold uppercase tracking-wide pr-10 mb-6 border-b-2 border-black pb-4">
+
+              <h2 className="text-4xl sm:text-5xl font-teko uppercase tracking-widest pr-12 mb-4 border-b-4 border-black pb-2 text-[#113B8D]">
                 {activeDept} Members
               </h2>
 
-              <div className="overflow-y-auto max-h-[50vh] pr-2 no-scrollbar">
+              <div className="overflow-y-auto max-h-[50vh] pr-2 no-scrollbar relative">
                 {getDepartmentMembersList(activeDept).length === 0 ? (
-                  <p className="text-center font-bold text-lg py-8 opacity-80">
+                  <p className="text-center font-bold text-lg py-8 opacity-80 italic">
                     No members listed for this department yet.
                   </p>
                 ) : (
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="border-b-2 border-black/40 text-sm font-black uppercase tracking-wider">
-                        <th className="py-2.5 px-3 w-16">#</th>
-                        <th className="py-2.5 px-3">Name</th>
-                        <th className="py-2.5 px-3 text-right">LinkedIn</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {getDepartmentMembersList(activeDept).map((member, index) => (
-                        <tr
-                          key={index}
-                          className="border-b border-black/10 hover:bg-black/5 transition-colors font-semibold"
-                        >
-                          <td className="py-3 px-3">{index + 1}</td>
-                          <td className="py-3 px-3 uppercase">{member.name}</td>
-                          <td className="py-3 px-3 text-right">
-                            {member.linkedin ? (
-                              <a
-                                href={member.linkedin}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#113B8D] text-white hover:bg-black text-xs font-bold uppercase tracking-wider shadow-[2px_2px_0px_rgba(0,0,0,0.15)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
-                              >
-                                <LinkedinIcon className="w-3.5 h-3.5" />
-                                <span>Connect</span>
-                                <ExternalLink size={10} className="opacity-80" />
-                              </a>
-                            ) : (
-                              <span className="text-xs font-medium text-[#113B8D]/50 italic">
-                                N/A
-                              </span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <div className="flex flex-col border-t border-blue-300/40">
+                    {getDepartmentMembersList(activeDept).map((member, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between py-3.5 border-b border-blue-300/60 font-sans relative group min-h-[64px]"
+                      >
+                        {/* Red Margin Line */}
+                        <div className="absolute left-10 top-0 bottom-0 w-[1.5px] bg-red-400/80" />
+
+                        {/* List Line Number */}
+                        <div className="absolute left-2 text-xs font-bold text-neutral-400 font-mono">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+
+                        {/* Member Details */}
+                        <div className="pl-14 flex-grow flex items-center justify-between gap-4">
+                          <span className="font-bold tracking-wide uppercase text-neutral-800 text-sm sm:text-base group-hover:text-[#113B8D] transition-colors truncate max-w-[200px] sm:max-w-[280px]">
+                            {member.name}
+                          </span>
+                          {member.linkedin ? (
+                            <a
+                              href={member.linkedin}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#113B8D] text-white hover:bg-black text-xs font-bold uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2.5px] hover:translate-y-[2.5px] transition-all"
+                            >
+                              <LinkedinIcon className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">Connect</span>
+                              <ExternalLink size={10} className="opacity-80" />
+                            </a>
+                          ) : (
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 italic">
+                              N/A
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
             </motion.div>

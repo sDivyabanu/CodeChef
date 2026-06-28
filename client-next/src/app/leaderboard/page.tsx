@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer/Footer";
+import { motion } from "framer-motion";
 
 // Inline SVG components for absolute pixel control and consistent display without external image loading dependencies.
 
@@ -107,6 +108,9 @@ function PodiumCard({
   starColor: string; 
   isCenter?: boolean; 
 }) {
+  const bobDuration = 3 + rank * 0.4;
+  const bobDelay = rank * 0.25;
+
   return (
     <div className={`
       relative flex flex-col items-center z-10
@@ -116,49 +120,65 @@ function PodiumCard({
       <div className={`absolute w-40 h-40 rounded-full blur-3xl opacity-50 -z-10 ${glowClass}`} />
 
       {/* Chef Hat floating above the avatar */}
-      <div className="relative mb-1.5 z-30 transition-transform duration-300 hover:-translate-y-1">
+      <motion.div
+        animate={{
+          y: [0, -5, 0],
+          rotate: rank === 1 ? [0, 1.5, -1.5, 0] : rank === 2 ? [-12, -10, -14, -12] : [12, 14, 10, 12],
+        }}
+        transition={{
+          duration: bobDuration,
+          delay: bobDelay,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="relative mb-1.5 z-30 transition-transform duration-300 hover:scale-105"
+      >
         <ChefHat rank={rank} />
-      </div>
+      </motion.div>
 
       {/* Circular Avatar Placeholder */}
-      <div className="relative -mb-5 z-20">
+      <motion.div
+        animate={{
+          y: [0, -3.5, 0],
+        }}
+        transition={{
+          duration: bobDuration,
+          delay: bobDelay + 0.2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="relative -mb-4.5 z-20"
+      >
         <Avatar rank={rank} />
-      </div>
+      </motion.div>
 
-      {/* Black Podium Base formed by base2.png (lid) and base1.png (cylinder body) */}
+      {/* Stepped Pedestal Box (2D Hand-drawn aesthetic) */}
       <div className={`
-        relative flex flex-col items-center z-10
-        ${isCenter ? 'w-56' : 'w-48'}
+        relative flex flex-col items-center justify-center
+        bg-[#F6F4D8] border-4 border-black
+        shadow-[6px_6px_0px_rgba(0,0,0,1)]
+        z-10
+        ${isCenter ? 'h-36 w-36 sm:w-40' : rank === 2 ? 'h-24 w-32 sm:w-36' : 'h-16 w-32 sm:w-36'}
       `}>
-        {/* base2: Top Lid */}
-        <img 
-          src="/images/base2.png" 
-          alt="Podium Top" 
-          className="w-full object-contain relative z-30"
-        />
-        
-        {/* base1: Cylinder Body */}
-        <div className="w-full relative -mt-[9%] z-20">
-          <img 
-            src="/images/base1.png" 
-            alt="Podium Base" 
-            className="w-full object-contain"
-          />
-          
-          {/* Overlay Content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center pb-2 pt-4">
-            {/* NAME */}
-            <span className="font-bebas text-lg sm:text-xl tracking-widest text-white uppercase leading-none">
-              {name}
-            </span>
-            
-            {/* Five stars */}
-            <div className="flex gap-0.5 mt-2">
-              {[...Array(5)].map((_, i) => (
-                <StarIcon key={i} color={starColor} />
-              ))}
-            </div>
-          </div>
+        {/* Subtle Corner brackets inside the pedestal for retro look */}
+        <div className="absolute top-1.5 left-1.5 w-2 h-2 border-t border-l border-black/40 pointer-events-none" />
+        <div className="absolute top-1.5 right-1.5 w-2 h-2 border-t border-r border-black/40 pointer-events-none" />
+        <div className="absolute bottom-1.5 left-1.5 w-2 h-2 border-b border-l border-black/40 pointer-events-none" />
+        <div className="absolute bottom-1.5 right-1.5 w-2 h-2 border-b border-r border-black/40 pointer-events-none" />
+
+        <div className="flex flex-col items-center justify-center h-full">
+          {/* Rank Number */}
+          <span className={`font-teko text-5xl sm:text-6xl leading-none font-bold ${rank === 1 ? 'text-[#EAB308]' : rank === 2 ? 'text-neutral-500' : 'text-amber-700'}`}>
+            {rank}
+          </span>
+          {/* Name Placeholder */}
+          <span className="font-bebas text-sm sm:text-base tracking-widest text-black/60 uppercase leading-none mt-1">
+            {name}
+          </span>
+          {/* Rating Placeholder */}
+          <span className="font-sans text-[10px] tracking-wider text-black/40 font-black mt-0.5">
+            —
+          </span>
         </div>
       </div>
     </div>
@@ -197,46 +217,114 @@ function PodiumSection() {
   );
 }
 
-// Component 4: LeaderboardRow rendering a single table entry with alternating dark/gray colors.
+// Component 4: LeaderboardRow rendering a single table entry with retro styling.
 function LeaderboardRow({ 
+  rank,
   name, 
   star, 
   rating, 
   isTopThree 
 }: { 
+  rank: number;
   name: string; 
   star: string; 
   rating: string; 
   isTopThree: boolean; 
 }) {
-  const bgClass = isTopThree ? 'bg-black text-white hover:bg-neutral-950' : 'bg-[#4B6584] text-white hover:bg-[#3d526b]';
-  
+  const cardBg = isTopThree ? 'bg-black text-white hover:bg-neutral-950' : 'bg-[#F6F4D8] text-black hover:bg-[#eae3c4]';
+  const baseShadow = isTopThree ? 'shadow-[4px_4px_0px_rgba(255,255,255,0.2)]' : 'shadow-[4px_4px_0px_rgba(0,0,0,1)]';
+  const hoverShadow = isTopThree ? 'hover:shadow-[6px_6px_0px_rgba(255,255,255,0.3)]' : 'hover:shadow-[6px_6px_0px_rgba(0,0,0,1)]';
+
+  // Star badge colors based on CodeChef star rating levels
+  const starColors = [
+    "bg-red-500 text-white",     // 1-2 Star
+    "bg-orange-500 text-white",  // 3 Star
+    "bg-yellow-400 text-black",  // 4 Star
+    "bg-emerald-500 text-white", // 5 Star
+    "bg-blue-500 text-white",    // 6 Star
+    "bg-purple-500 text-white"   // 7 Star
+  ];
+  const starCount = parseInt(star);
+  const starBadgeStyle = !isNaN(starCount)
+    ? starColors[Math.min(starCount - 1, starColors.length - 1)]
+    : "bg-neutral-300 text-neutral-500";
+
+  const ratingBg = rating === "—"
+    ? "bg-neutral-300 text-neutral-500"
+    : "bg-[#113B8D] text-white";
+
   return (
     <div className={`
-      flex justify-between items-center w-full rounded-full border-[2.5px] border-black px-6 py-3 my-1.5 font-sans font-bold text-xs sm:text-sm shadow-md transition-transform hover:scale-[1.01] duration-200 cursor-default
-      ${bgClass}
+      flex justify-between items-center w-full rounded-lg border-[3px] border-black px-4 sm:px-6 py-3 my-2.5 font-sans font-bold text-xs sm:text-sm transition-all duration-200 cursor-default hover:-translate-y-0.5
+      ${cardBg} ${baseShadow} ${hoverShadow}
     `}>
-      <span className="w-1/3 text-left tracking-wide">{name}</span>
-      <span className="w-1/3 text-center tracking-wide">{star}</span>
-      <span className="w-1/3 text-right tracking-wide">{rating}</span>
+      {/* Left: Rank & Name */}
+      <div className="flex items-center gap-3 sm:gap-4 w-1/3 text-left">
+        <div className={`
+          w-7 h-7 rounded-full flex items-center justify-center text-xs font-mono font-black border-2 border-black
+          ${isTopThree ? 'bg-[#EAB308] text-black border-white/20' : 'bg-black text-white'}
+        `}>
+          {rank}
+        </div>
+        <span className="tracking-wide uppercase truncate max-w-[100px] sm:max-w-[180px]">{name}</span>
+      </div>
+
+      {/* Center: Stars Badge */}
+      <div className="w-1/3 flex justify-center">
+        <div className={`
+          flex items-center gap-1 px-3 py-1 rounded border-2 border-black text-xs font-extrabold uppercase shadow-[2px_2px_0px_rgba(0,0,0,1)]
+          ${starBadgeStyle}
+        `}>
+          <span>{star}</span>
+        </div>
+      </div>
+
+      {/* Right: Rating Badge */}
+      <div className="w-1/3 flex justify-end">
+        <div className={`px-3.5 py-1 rounded-md border-2 border-black font-mono shadow-[2.5px_2.5px_0px_rgba(0,0,0,1)] text-xs sm:text-sm ${ratingBg}`}>
+          {rating}
+        </div>
+      </div>
     </div>
   );
 }
 
-// Component 5: LeaderboardTable placing the large cream-colored panel and rendering placeholder rows.
+// Component 5: LeaderboardTable placing the large cream-colored panel and rendering player rows.
 function LeaderboardTable() {
   const rows = [
-    { name: "—", star: "5 ★", rating: "2840", isTopThree: true },
-    { name: "—", star: "5 ★", rating: "2720", isTopThree: true },
-    { name: "—", star: "5 ★", rating: "2690", isTopThree: true },
-    { name: "—", star: "4 ★", rating: "2480", isTopThree: false },
-    { name: "—", star: "4 ★", rating: "2410", isTopThree: false },
-    { name: "—", star: "4 ★", rating: "2390", isTopThree: false },
-    { name: "—", star: "3 ★", rating: "1980", isTopThree: false },
-    { name: "—", star: "3 ★", rating: "1870", isTopThree: false },
-    { name: "—", star: "3 ★", rating: "1850", isTopThree: false },
-    { name: "—", star: "2 ★", rating: "1540", isTopThree: false },
+    { name: "—", star: "—", rating: "—", isTopThree: true },
+    { name: "—", star: "—", rating: "—", isTopThree: true },
+    { name: "—", star: "—", rating: "—", isTopThree: true },
+    { name: "—", star: "—", rating: "—", isTopThree: false },
+    { name: "—", star: "—", rating: "—", isTopThree: false },
+    { name: "—", star: "—", rating: "—", isTopThree: false },
+    { name: "—", star: "—", rating: "—", isTopThree: false },
+    { name: "—", star: "—", rating: "—", isTopThree: false },
+    { name: "—", star: "—", rating: "—", isTopThree: false },
+    { name: "—", star: "—", rating: "—", isTopThree: false },
   ];
+
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
+  const rowVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring" as const,
+        stiffness: 100,
+        damping: 15,
+      },
+    },
+  };
 
   return (
     <section className="w-full max-w-4xl mx-auto px-6 mb-24 relative z-10">
@@ -267,18 +355,26 @@ function LeaderboardTable() {
           <span className="w-1/3 text-right tracking-wider">CURRENT RATING</span>
         </div>
 
-        {/* Table Rows */}
-        <div className="flex flex-col gap-1">
+        {/* Table Rows with Stagger Animation */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          className="flex flex-col gap-1"
+        >
           {rows.map((row, index) => (
-            <LeaderboardRow 
-              key={index} 
-              name={row.name} 
-              star={row.star} 
-              rating={row.rating} 
-              isTopThree={row.isTopThree} 
-            />
+            <motion.div key={index} variants={rowVariants}>
+              <LeaderboardRow 
+                rank={index + 1}
+                name={row.name} 
+                star={row.star} 
+                rating={row.rating} 
+                isTopThree={row.isTopThree} 
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -286,8 +382,32 @@ function LeaderboardTable() {
 
 // Main Page Component
 export default function LeaderboardPage() {
+  // Generate 15 wavy background paths dynamically to cover the entire page scroll height
+  const backgroundPaths = Array.from({ length: 15 }, (_, i) => {
+    const yBase = i * 420 + 80;
+    const isEven = i % 2 === 0;
+    return isEven
+      ? `M -100,${yBase} Q 300,${yBase - 50} 800,${yBase + 20} T 1900,${yBase - 20}`
+      : `M -100,${yBase} Q 400,${yBase + 100} 900,${yBase - 50} T 2100,${yBase + 50}`;
+  });
+
   return (
     <main className="w-full min-h-screen bg-[#5878AF] relative flex flex-col items-center pt-4 overflow-hidden select-none">
+      {/* Dashed curved paths in the background */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
+        {backgroundPaths.map((d, idx) => (
+          <path 
+            key={idx}
+            d={d} 
+            fill="none" 
+            stroke="white" 
+            strokeWidth="4" 
+            strokeDasharray="12 12" 
+            strokeOpacity="0.3"
+          />
+        ))}
+      </svg>
+
       {/* Header bar and large title */}
       <LeaderboardHeader />
 

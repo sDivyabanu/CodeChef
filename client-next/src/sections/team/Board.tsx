@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import LeadCard from "./LeadCard";
 import { client } from "@/lib/sanityClient";
 import { Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface SanityLead {
   _id: string;
@@ -99,45 +100,16 @@ export default function Board() {
   return (
     <section className="relative min-h-screen max-w-[1466px] w-[90%] mx-auto py-12">
       {/* Title */}
-      <h1 className="text-center text-white text-7xl font-bold tracking-wider mb-10">
+      <h1 className="text-center text-white text-7xl sm:text-8xl md:text-9xl font-teko tracking-widest uppercase mb-10">
         LEADS
       </h1>
 
       {/* Wheel Picker */}
-      <div className="flex justify-center mb-16 no-scrollbar">
-        <div className="h-[220px] overflow-y-auto snap-y snap-mandatory no-scrollbar text-center px-4">
-          {years.map((year) => (
-            <button
-              key={year}
-              ref={selectedYear === year ? activeYearRef : null}
-              onClick={(e) => {
-                setSelectedYear(year);
-                e.currentTarget.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center",
-                });
-              }}
-              className={`
-                h-[70px]
-                flex
-                items-center
-                justify-center
-                snap-center
-                cursor-pointer
-                transition-all
-                duration-300
-                ${
-                  selectedYear === year
-                    ? "text-white text-5xl scale-110 font-bold"
-                    : "text-white/50 text-3xl font-medium hover:text-white/80"
-                }
-              `}
-            >
-              {year}
-            </button>
-          ))}
-        </div>
-      </div>
+      <WheelYearPicker
+        years={years}
+        selectedYear={selectedYear}
+        onChange={setSelectedYear}
+      />
 
       {loading ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4">
@@ -219,9 +191,36 @@ export default function Board() {
           )}
 
           {/* Web Dev & Projects */}
-          {(webLeads.length > 0 || projectsLeads.length > 0) && (
+          {webLeads.length > 0 && projectsLeads.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-8 mb-16">
-              {webLeads.length > 0 ? (
+              <DepartmentRow title="Web Development">
+                {webLeads.map((lead, idx) => (
+                  <LeadCard
+                    key={lead._id}
+                    name={lead.name}
+                    imageUrl={lead.imageUrl}
+                    linkedin={lead.linkedin}
+                    role={lead.position || "Web Development"}
+                    featured={idx === 1}
+                  />
+                ))}
+              </DepartmentRow>
+              <DepartmentRow title="Projects">
+                {projectsLeads.map((lead, idx) => (
+                  <LeadCard
+                    key={lead._id}
+                    name={lead.name}
+                    imageUrl={lead.imageUrl}
+                    linkedin={lead.linkedin}
+                    role={lead.position || "Projects"}
+                    featured={idx === 1}
+                  />
+                ))}
+              </DepartmentRow>
+            </div>
+          ) : (
+            <div className="mb-16">
+              {webLeads.length > 0 && (
                 <DepartmentRow title="Web Development">
                   {webLeads.map((lead, idx) => (
                     <LeadCard
@@ -234,11 +233,8 @@ export default function Board() {
                     />
                   ))}
                 </DepartmentRow>
-              ) : (
-                <div />
               )}
-
-              {projectsLeads.length > 0 ? (
+              {projectsLeads.length > 0 && (
                 <DepartmentRow title="Projects">
                   {projectsLeads.map((lead, idx) => (
                     <LeadCard
@@ -251,16 +247,41 @@ export default function Board() {
                     />
                   ))}
                 </DepartmentRow>
-              ) : (
-                <div />
               )}
             </div>
           )}
 
           {/* Design & Social Media */}
-          {(designLeads.length > 0 || socialLeads.length > 0) && (
+          {designLeads.length > 0 && socialLeads.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-8 mb-16">
-              {designLeads.length > 0 ? (
+              <DepartmentRow title="Design">
+                {designLeads.map((lead, idx) => (
+                  <LeadCard
+                    key={lead._id}
+                    name={lead.name}
+                    imageUrl={lead.imageUrl}
+                    linkedin={lead.linkedin}
+                    role={lead.position || "Design"}
+                    featured={idx === 1}
+                  />
+                ))}
+              </DepartmentRow>
+              <DepartmentRow title="Social Media & Content">
+                {socialLeads.map((lead, idx) => (
+                  <LeadCard
+                    key={lead._id}
+                    name={lead.name}
+                    imageUrl={lead.imageUrl}
+                    linkedin={lead.linkedin}
+                    role={lead.position || "Social Media & Content"}
+                    featured={idx === 1}
+                  />
+                ))}
+              </DepartmentRow>
+            </div>
+          ) : (
+            <div className="mb-16">
+              {designLeads.length > 0 && (
                 <DepartmentRow title="Design">
                   {designLeads.map((lead, idx) => (
                     <LeadCard
@@ -273,11 +294,8 @@ export default function Board() {
                     />
                   ))}
                 </DepartmentRow>
-              ) : (
-                <div />
               )}
-
-              {socialLeads.length > 0 ? (
+              {socialLeads.length > 0 && (
                 <DepartmentRow title="Social Media & Content">
                   {socialLeads.map((lead, idx) => (
                     <LeadCard
@@ -290,16 +308,41 @@ export default function Board() {
                     />
                   ))}
                 </DepartmentRow>
-              ) : (
-                <div />
               )}
             </div>
           )}
 
           {/* Outreach & Event Management */}
-          {(outreachLeads.length > 0 || eventLeads.length > 0) && (
+          {outreachLeads.length > 0 && eventLeads.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-8 mb-16">
-              {outreachLeads.length > 0 ? (
+              <DepartmentRow title="Outreach">
+                {outreachLeads.map((lead, idx) => (
+                  <LeadCard
+                    key={lead._id}
+                    name={lead.name}
+                    imageUrl={lead.imageUrl}
+                    linkedin={lead.linkedin}
+                    role={lead.position || "Outreach"}
+                    featured={idx === 1}
+                  />
+                ))}
+              </DepartmentRow>
+              <DepartmentRow title="Event Management">
+                {eventLeads.map((lead, idx) => (
+                  <LeadCard
+                    key={lead._id}
+                    name={lead.name}
+                    imageUrl={lead.imageUrl}
+                    linkedin={lead.linkedin}
+                    role={lead.position || "Event Management"}
+                    featured={idx === 1}
+                  />
+                ))}
+              </DepartmentRow>
+            </div>
+          ) : (
+            <div className="mb-16">
+              {outreachLeads.length > 0 && (
                 <DepartmentRow title="Outreach">
                   {outreachLeads.map((lead, idx) => (
                     <LeadCard
@@ -312,11 +355,8 @@ export default function Board() {
                     />
                   ))}
                 </DepartmentRow>
-              ) : (
-                <div />
               )}
-
-              {eventLeads.length > 0 ? (
+              {eventLeads.length > 0 && (
                 <DepartmentRow title="Event Management">
                   {eventLeads.map((lead, idx) => (
                     <LeadCard
@@ -329,16 +369,41 @@ export default function Board() {
                     />
                   ))}
                 </DepartmentRow>
-              ) : (
-                <div />
               )}
             </div>
           )}
 
           {/* Finance & Marketing */}
-          {(financeLeads.length > 0 || marketingLeads.length > 0) && (
+          {financeLeads.length > 0 && marketingLeads.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-8 mb-16">
-              {financeLeads.length > 0 ? (
+              <DepartmentRow title="Finance">
+                {financeLeads.map((lead, idx) => (
+                  <LeadCard
+                    key={lead._id}
+                    name={lead.name}
+                    imageUrl={lead.imageUrl}
+                    linkedin={lead.linkedin}
+                    role={lead.position || "Finance"}
+                    featured={idx === 1}
+                  />
+                ))}
+              </DepartmentRow>
+              <DepartmentRow title="Marketing & Sponsorship">
+                {marketingLeads.map((lead, idx) => (
+                  <LeadCard
+                    key={lead._id}
+                    name={lead.name}
+                    imageUrl={lead.imageUrl}
+                    linkedin={lead.linkedin}
+                    role={lead.position || "Marketing & Sponsorship"}
+                    featured={idx === 1}
+                  />
+                ))}
+              </DepartmentRow>
+            </div>
+          ) : (
+            <div className="mb-16">
+              {financeLeads.length > 0 && (
                 <DepartmentRow title="Finance">
                   {financeLeads.map((lead, idx) => (
                     <LeadCard
@@ -351,11 +416,8 @@ export default function Board() {
                     />
                   ))}
                 </DepartmentRow>
-              ) : (
-                <div />
               )}
-
-              {marketingLeads.length > 0 ? (
+              {marketingLeads.length > 0 && (
                 <DepartmentRow title="Marketing & Sponsorship">
                   {marketingLeads.map((lead, idx) => (
                     <LeadCard
@@ -368,8 +430,6 @@ export default function Board() {
                     />
                   ))}
                 </DepartmentRow>
-              ) : (
-                <div />
               )}
             </div>
           )}
@@ -387,12 +447,129 @@ interface DepartmentRowProps {
 function DepartmentRow({ title, children }: DepartmentRowProps) {
   return (
     <div className="mb-16">
-      <h2 className="text-center text-white text-5xl font-bold tracking-wide mb-8">
+      <h2 className="text-center text-white text-4xl sm:text-5xl font-teko tracking-widest uppercase mb-8">
         {title}
       </h2>
 
       <div className="flex flex-wrap justify-center gap-8">
         {children}
+      </div>
+    </div>
+  );
+}
+
+// Helper Component: Interactive 3D Wheel Year Picker
+function WheelYearPicker({
+  years,
+  selectedYear,
+  onChange,
+}: {
+  years: string[];
+  selectedYear: string;
+  onChange: (year: string) => void;
+}) {
+  const activeIdx = years.indexOf(selectedYear);
+
+  return (
+    <div className="relative flex flex-row items-center justify-center gap-8 w-full max-w-sm mx-auto mb-14 select-none z-20">
+      {/* Dashed vertical track on the left of the drum wheel */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-[2px] border-l-2 border-dashed border-white/20 -translate-y-1/2 -z-10" />
+
+      {/* Scroll controls (stacked vertically) */}
+      <div className="flex flex-col gap-4 items-center justify-center">
+        {/* Scroll Up Button */}
+        <button
+          onClick={() => {
+            if (activeIdx > 0) onChange(years[activeIdx - 1]);
+          }}
+          disabled={activeIdx === 0}
+          className={`w-9 h-9 rounded-full border-[2px] border-black bg-[#F5F0D8] text-black flex items-center justify-center shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] hover:bg-[#eae3c4] active:translate-y-[1px] active:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer z-40 ${
+            activeIdx === 0 ? "opacity-35 cursor-not-allowed" : ""
+          }`}
+          aria-label="Previous Year"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
+            <polyline points="18 15 12 9 6 15" />
+          </svg>
+        </button>
+
+        {/* Scroll Down Button */}
+        <button
+          onClick={() => {
+            if (activeIdx < years.length - 1) onChange(years[activeIdx + 1]);
+          }}
+          disabled={activeIdx === years.length - 1}
+          className={`w-9 h-9 rounded-full border-[2px] border-black bg-[#F5F0D8] text-black flex items-center justify-center shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] hover:bg-[#eae3c4] active:translate-y-[1px] active:shadow-[1.5px_1.5px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer z-40 ${
+            activeIdx === years.length - 1 ? "opacity-35 cursor-not-allowed" : ""
+          }`}
+          aria-label="Next Year"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-4 h-4">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+      </div>
+
+      {/* The 3D Vertical Wheel Container */}
+      <div 
+        className="relative flex flex-col items-center justify-center h-48 w-48 overflow-visible"
+        style={{ perspective: "800px" }}
+      >
+        {years.map((year, idx) => {
+          const offset = idx - activeIdx;
+          
+          // Only render items within a 2-step visibility range to form a clean vertical drum
+          if (Math.abs(offset) > 2) return null;
+
+          // Compute dynamic positioning styles for vertical rotation (along X-axis)
+          const yTranslation = offset * 46; // vertical offset spacing
+          const zDepth = -Math.abs(offset) * 55; // 3D depth
+          const rotationX = -offset * 25; // rotation angle along X axis
+          const scaleFactor = 1 - Math.abs(offset) * 0.15; // scaling down distant items
+          const opacityVal = Math.max(0, 1 - Math.abs(offset) * 0.45); // fading out distant items
+
+          return (
+            <motion.div
+              key={year}
+              animate={{
+                y: yTranslation,
+                z: zDepth,
+                rotateX: rotationX,
+                scale: scaleFactor,
+                opacity: opacityVal,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 24,
+              }}
+              onClick={() => {
+                if (Math.abs(offset) <= 1) onChange(year);
+              }}
+              className={`
+                absolute cursor-pointer font-bebas text-xl sm:text-2xl tracking-widest uppercase px-5 py-1.5 rounded-md border-[2.5px] border-black text-center transition-colors duration-200 w-36
+                ${offset === 0
+                  ? "bg-black text-white shadow-[4px_4px_0px_0px_rgba(255,255,255,0.4)] z-30 font-bold"
+                  : "bg-[#F5F0D8] text-black hover:bg-[#eae3c4] shadow-[2.5px_2.5px_0px_0px_rgba(0,0,0,1)] z-10"
+                }
+                ${Math.abs(offset) > 1 ? "pointer-events-none" : ""}
+              `}
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              {year}
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Wheel pointer Indicator */}
+      <div className="flex flex-row items-center gap-1.5 z-10 border-l border-black/10 pl-4 h-12">
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-black rotate-90">
+          <path d="M12 3l6 6H6z" />
+        </svg>
+        <span className="font-sans text-[9px] text-white/50 tracking-wider font-extrabold uppercase mt-0.5">
+          Year
+        </span>
       </div>
     </div>
   );

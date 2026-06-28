@@ -40,9 +40,9 @@ export default function LeadCard({
     <div
       className={`
         relative
-        w-[170px]
-        h-[240px]
-        p-4
+        w-[210px]
+        h-[290px]
+        p-5
         shadow-[8px_8px_0px_rgba(0,0,0,0.25)]
         transition-all
         duration-300
@@ -77,15 +77,15 @@ export default function LeadCard({
       />
 
       {/* Profile */}
-      <div className="flex justify-center mt-3">
+      <div className="flex justify-center mt-2">
         {imageUrl && !imgError ? (
           <img
             src={imageUrl}
             alt={name}
             onError={() => setImgError(true)}
             className={`
-              w-20
-              h-20
+              w-32
+              h-32
               rounded-sm
               border-2
               object-cover
@@ -97,8 +97,8 @@ export default function LeadCard({
         ) : (
           <div
             className={`
-              w-20
-              h-20
+              w-32
+              h-32
               rounded-sm
               border-2
               flex items-center justify-center
@@ -109,14 +109,14 @@ export default function LeadCard({
               }
             `}
           >
-            <User size={32} />
+            <User size={52} />
           </div>
         )}
       </div>
 
       {/* Name */}
       <h3
-        className="mt-5 text-center text-xl font-bold tracking-wide truncate"
+        className="mt-4 text-center text-xl font-bold tracking-wide truncate"
         title={name}
       >
         {name}
@@ -124,7 +124,7 @@ export default function LeadCard({
 
       {/* Role */}
       <p
-        className="text-center text-xs tracking-wider opacity-85 truncate"
+        className="mt-1 text-center text-sm tracking-wider opacity-85 truncate"
         title={role}
       >
         {role}
@@ -139,7 +139,7 @@ export default function LeadCard({
             rel="noopener noreferrer"
             className="transition-transform hover:scale-110 text-inherit"
           >
-            <LinkedinIcon className="w-5 h-5" />
+            <LinkedinIcon className="w-6 h-6" />
           </a>
         </div>
       )}
