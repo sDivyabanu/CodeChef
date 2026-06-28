@@ -67,14 +67,14 @@ function LeadAvatar({ lead }: { lead: SanityLead }) {
           src={lead.imageUrl}
           alt={lead.name}
           onError={() => setImgError(true)}
-          className="w-8 h-8 rounded-full border border-[#113B8D]/50 object-cover group-hover:scale-105 transition-transform"
+          className="w-9 h-9 rounded-full border-2 border-black object-cover group-hover:scale-105 transition-transform shadow-[1.5px_1.5px_0px_rgba(0,0,0,1)]"
         />
       ) : (
-        <div className="w-8 h-8 rounded-full border border-[#113B8D]/50 bg-neutral-300 flex items-center justify-center text-xs font-bold text-[#113B8D]">
+        <div className="w-9 h-9 rounded-full border-2 border-black bg-neutral-300 flex items-center justify-center text-xs font-bold text-[#113B8D] shadow-[1.5px_1.5px_0px_rgba(0,0,0,1)]">
           {lead.name.charAt(0).toUpperCase()}
         </div>
       )}
-      <span className="text-xs font-bold group-hover:underline truncate max-w-[120px]">
+      <span className="text-xs font-bold group-hover:underline truncate max-w-[120px] text-black">
         {lead.name}
       </span>
     </a>
@@ -212,15 +212,19 @@ export default function Departments() {
                   relative flex flex-col
                   bg-[#F6F4D8] text-[#113B8D]
                   p-6 md:p-8
-                  shadow-[8px_8px_0px_rgba(0,0,0,0.25)]
+                  border-4 border-black
+                  shadow-[8px_8px_0px_rgba(0,0,0,1)]
                   transition-all duration-300
-                  hover:-translate-y-2 hover:rotate-0
+                  hover:-translate-y-2.5 hover:shadow-[12px_12px_0px_rgba(0,0,0,1)] hover:rotate-0
                   ${rotation}
                 `}
               >
-                <div className="absolute top-3 right-3 w-3 h-3 rounded-full border bg-gray-100 border-gray-500" />
+                {/* Push Pin Head / Tack */}
+                <div className="absolute top-3 right-3 w-4.5 h-4.5 rounded-full bg-red-500 border-2 border-black shadow-[1.5px_1.5px_0px_rgba(0,0,0,1)] flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/70" />
+                </div>
                 <div className="flex justify-between items-start gap-4 mb-4">
-                  <h3 className="text-3xl font-extrabold tracking-wide uppercase leading-tight">
+                  <h3 className="text-3xl font-extrabold tracking-wide uppercase leading-tight text-black">
                     {dept.name}
                   </h3>
                   {dept.icon && (
@@ -231,12 +235,12 @@ export default function Departments() {
                     />
                   )}
                 </div>
-                <p className="text-sm font-medium leading-relaxed mb-6 flex-grow opacity-90">
+                <p className="text-sm font-medium leading-relaxed mb-6 flex-grow text-neutral-800">
                   {dept.description}
                 </p>
                 {deptLeads.length > 0 && (
-                  <div className="mb-6 border-t border-[#113B8D]/20 pt-4">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-[#113B8D]/70 mb-3">
+                  <div className="mb-6 border-t-2 border-dashed border-black/20 pt-4">
+                    <h4 className="text-xs font-black uppercase tracking-widest text-neutral-500 mb-3">
                       Leads
                     </h4>
                     <div className="flex flex-wrap gap-4">
@@ -249,7 +253,7 @@ export default function Departments() {
 
                 <button
                   onClick={() => setActiveDept(dept.name)}
-                  className="w-full py-2.5 bg-[#113B8D] text-white hover:bg-black font-extrabold tracking-widest text-xs uppercase shadow-[4px_4px_0px_rgba(0,0,0,0.15)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all mt-auto"
+                  className="w-full py-3 bg-[#113B8D] text-white hover:bg-black font-black tracking-widest text-xs uppercase border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all mt-auto"
                 >
                   {dept.members ? `${dept.members} Members` : "View Members"}
                 </button>
