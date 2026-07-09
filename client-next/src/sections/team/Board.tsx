@@ -159,6 +159,7 @@ export default function Board() {
                   imageUrl={lead.imageUrl}
                   linkedin={lead.linkedin}
                   role="General Secretary"
+                  featured
                 />
               ))}
 
@@ -205,7 +206,7 @@ export default function Board() {
                   />
                 ))}
               </DepartmentRow>
-              <DepartmentRow title="Projects">
+              <DepartmentRow title="Projects and Web Development">
                 {projectsLeads.map((lead, idx) => (
                   <LeadCard
                     key={lead._id}
