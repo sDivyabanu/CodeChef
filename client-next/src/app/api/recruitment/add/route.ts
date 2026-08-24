@@ -15,13 +15,65 @@ function getJoinUsSheetBestLink(links: any, department: string) {
   return departmentSheetBestLinks[department] || links?.joinUsSheetBest;
 }
 
+function copyFirstPresent(target: Record<string, any>, source: Record<string, any>, key: string, aliases: string[] = []) {
+  const keys = [key, `pref2_${key}`, ...aliases, ...aliases.map((alias) => `pref2_${alias}`)];
+  for (const candidate of keys) {
+    if (source[candidate] !== undefined && source[candidate] !== null && source[candidate] !== "") {
+      target[key] = source[candidate];
+      return;
+    }
+  }
+}
+
+function normalizeRecruitmentData(data: Record<string, any>) {
+  if (!["design", "management", "marketing_and_outreach"].includes(data.department)) {
+    return data;
+  }
+
+  const normalized: Record<string, any> = { ...data };
+
+  const commonFields = ["name", "reg_no", "vit_email", "phone_no", "degree", "branch", "experience", "whyJoin", "department", "cgpa"];
+  for (const field of commonFields) {
+    copyFirstPresent(normalized, data, field);
+  }
+
+  if (data.department === "design") {
+    copyFirstPresent(normalized, data, "designSkills", ["designSoftware"]);
+    copyFirstPresent(normalized, data, "whyDesign");
+    copyFirstPresent(normalized, data, "yourWork");
+    copyFirstPresent(normalized, data, "designPortfolio");
+  } else if (data.department === "management") {
+    copyFirstPresent(normalized, data, "hostelerORdayscholar");
+    copyFirstPresent(normalized, data, "otherClub");
+    copyFirstPresent(normalized, data, "roleInCurrentClub", ["managementExperience"]);
+    copyFirstPresent(normalized, data, "handleSituation", ["uncooperativeMember"]);
+    copyFirstPresent(normalized, data, "strength", ["managementStrengths"]);
+    copyFirstPresent(normalized, data, "effectiveComm", ["managementCommunications"]);
+  } else if (data.department === "marketing_and_outreach") {
+    copyFirstPresent(normalized, data, "hostelerORdayscholar", ["outreachExperience"]);
+    copyFirstPresent(normalized, data, "secureSponsors", ["outreachSponsorship"]);
+    copyFirstPresent(normalized, data, "promoteEvent", ["outreachCaptions"]);
+    copyFirstPresent(normalized, data, "moreParticipants");
+  }
+
+  for (const key of Object.keys(normalized)) {
+    if (key.startsWith("pref2_") || normalized[key] === undefined || normalized[key] === null) {
+      delete normalized[key];
+    }
+  }
+
+  return normalized;
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { data } = await req.json();
+    const { data: rawData } = await req.json();
 
-    if (!data || !data.department) {
+    if (!rawData || !rawData.department) {
       return NextResponse.json({ error: "Missing submission data or department" }, { status: 400 });
     }
+
+    const data = normalizeRecruitmentData(rawData);
 
     const query = `*[_type == "recruitmentSheetLinks"] | order(_createdAt desc)[0]`;
     const links = await client.fetch(query);

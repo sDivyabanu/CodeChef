@@ -72,6 +72,82 @@ function getAllJoinUsSheetBestLinks(links) {
   return [...new Set(sheetLinks.filter(Boolean))];
 }
 
+function copyFirstPresent(target, source, key, aliases = []) {
+  const keys = [key, `pref2_${key}`, ...aliases, ...aliases.map((alias) => `pref2_${alias}`)];
+  for (const candidate of keys) {
+    if (
+      source[candidate] !== undefined &&
+      source[candidate] !== null &&
+      source[candidate] !== ""
+    ) {
+      target[key] = source[candidate];
+      return;
+    }
+  }
+}
+
+function normalizeRecruitmentData(data) {
+  if (!["design", "management", "marketing_and_outreach"].includes(data.department)) {
+    return data;
+  }
+
+  const normalized = { ...data };
+
+  [
+    "name",
+    "reg_no",
+    "vit_email",
+    "phone_no",
+    "degree",
+    "branch",
+    "experience",
+    "whyJoin",
+    "department",
+    "cgpa",
+  ].forEach((field) => copyFirstPresent(normalized, data, field));
+
+  if (data.department === "design") {
+    copyFirstPresent(normalized, data, "designSkills", ["designSoftware"]);
+    copyFirstPresent(normalized, data, "whyDesign");
+    copyFirstPresent(normalized, data, "yourWork");
+    copyFirstPresent(normalized, data, "designPortfolio");
+  } else if (data.department === "management") {
+    copyFirstPresent(normalized, data, "hostelerORdayscholar");
+    copyFirstPresent(normalized, data, "otherClub");
+    copyFirstPresent(normalized, data, "roleInCurrentClub", [
+      "managementExperience",
+    ]);
+    copyFirstPresent(normalized, data, "handleSituation", [
+      "uncooperativeMember",
+    ]);
+    copyFirstPresent(normalized, data, "strength", ["managementStrengths"]);
+    copyFirstPresent(normalized, data, "effectiveComm", [
+      "managementCommunications",
+    ]);
+  } else if (data.department === "marketing_and_outreach") {
+    copyFirstPresent(normalized, data, "hostelerORdayscholar", [
+      "outreachExperience",
+    ]);
+    copyFirstPresent(normalized, data, "secureSponsors", [
+      "outreachSponsorship",
+    ]);
+    copyFirstPresent(normalized, data, "promoteEvent", ["outreachCaptions"]);
+    copyFirstPresent(normalized, data, "moreParticipants");
+  }
+
+  Object.keys(normalized).forEach((key) => {
+    if (
+      key.startsWith("pref2_") ||
+      normalized[key] === undefined ||
+      normalized[key] === null
+    ) {
+      delete normalized[key];
+    }
+  });
+
+  return normalized;
+}
+
 // https://docs.sheet.best/#generating-your-rest-api
 // ***************************************************************************
 
@@ -150,7 +226,8 @@ const addContactUsEmailInGoogleSheet = async (req, res) => {
 
 // ***************** Join us APIs Starts Here ************************************
 const addJoinUsDataInGoogleSheet = async (req, res) => {
-  const { data } = req.body;
+  const { data: rawData } = req.body;
+  const data = rawData ? normalizeRecruitmentData(rawData) : rawData;
   // console.log("What we got from frontend:", req.body);
   let links;
   try {
