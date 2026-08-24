@@ -67,13 +67,13 @@ export default function RecruitmentPage() {
 
   const getDeptFields = (dept: string) => {
     if (dept === "competitive_programming") return ["cpProfile", "whyCp", "cpExperience", "weeklyContests"];
-    if (dept === "projects") return ["github", "linkedin", "whyProjects", "projectDescription", "problemStatement"];
-    if (dept === "web_development") return ["github", "linkedin", "techStack", "webDevCourse"];
-    if (dept === "design") return ["designPortfolio", "designSoftware", "whyDesign"];
-    if (dept === "management") return ["managementExperience", "uncooperativeMember", "managementStrengths", "managementCommunications"];
-    if (dept === "marketing_and_outreach") return ["outreachExperience", "outreachSponsorship", "outreachCaptions"];
-    if (dept === "social_media_and_content") return ["socialMediaPods", "socialMediaNiche", "socialMediaTools"];
-    if (dept === "finance") return ["financeMotivation", "excelProficiency", "fintechAwareness"];
+    if (dept === "projects") return ["github", "linkedin", "whyProjects", "hackathon1_select", "hackathon1_contribution", "hackathon1_proposal"];
+    if (dept === "web_development") return ["github", "linkedin", "techStack", "webDevCourse", "whichCourse"];
+    if (dept === "design") return ["designSkills", "whyDesign", "yourWork", "designPortfolio"];
+    if (dept === "management") return ["hostelerORdayscholar", "otherClub", "roleInCurrentClub", "handleSituation", "strength", "effectiveComm"];
+    if (dept === "marketing_and_outreach") return ["hostelerORdayscholar", "secureSponsors", "promoteEvent", "moreParticipants"];
+    if (dept === "social_media_and_content") return ["pod", "niche", "softwareForVideoEditing"];
+    if (dept === "finance") return ["whyFinance", "excel", "financialAwareness"];
     return [];
   };
 
@@ -105,8 +105,12 @@ export default function RecruitmentPage() {
         linkedin: formData.linkedin,
         resume: formData.resume,
         whyProjects: formData.whyProjects,
-        projectDescription: formData.projectDescription,
-        problemStatement: formData.problemStatement,
+        hackathon1_select: formData.hackathon1_select,
+        hackathon1_contribution: formData.hackathon1_contribution,
+        hackathon1_proposal: formData.hackathon1_proposal,
+        hackathon2_select: formData.hackathon2_select,
+        hackathon2_contribution: formData.hackathon2_contribution,
+        hackathon2_proposal: formData.hackathon2_proposal,
       };
     } else if (department === "web_development") {
       deptFields = {
@@ -114,38 +118,42 @@ export default function RecruitmentPage() {
         linkedin: formData.linkedin,
         techStack: formData.techStack,
         webDevCourse: formData.webDevCourse,
-        webDevLink: formData.webDevLink,
+        whichCourse: formData.whichCourse,
       };
     } else if (department === "design") {
       deptFields = {
-        designPortfolio: formData.designPortfolio,
-        designSoftware: formData.designSoftware,
+        designSkills: formData.designSkills,
         whyDesign: formData.whyDesign,
+        yourWork: formData.yourWork,
+        designPortfolio: formData.designPortfolio,
       };
     } else if (department === "management") {
       deptFields = {
-        managementExperience: formData.managementExperience,
-        uncooperativeMember: formData.uncooperativeMember,
-        managementStrengths: formData.managementStrengths,
-        managementCommunications: formData.managementCommunications,
+        hostelerORdayscholar: formData.hostelerORdayscholar,
+        otherClub: formData.otherClub,
+        roleInCurrentClub: formData.roleInCurrentClub,
+        handleSituation: formData.handleSituation,
+        strength: formData.strength,
+        effectiveComm: formData.effectiveComm,
       };
     } else if (department === "marketing_and_outreach") {
       deptFields = {
-        outreachExperience: formData.outreachExperience,
-        outreachSponsorship: formData.outreachSponsorship,
-        outreachCaptions: formData.outreachCaptions,
+        hostelerORdayscholar: formData.hostelerORdayscholar,
+        secureSponsors: formData.secureSponsors,
+        promoteEvent: formData.promoteEvent,
+        moreParticipants: formData.moreParticipants,
       };
     } else if (department === "social_media_and_content") {
       deptFields = {
-        socialMediaPods: formData.socialMediaPods,
-        socialMediaNiche: formData.socialMediaNiche,
-        socialMediaTools: formData.socialMediaTools,
+        pod: formData.pod,
+        niche: formData.niche,
+        softwareForVideoEditing: formData.softwareForVideoEditing,
       };
     } else if (department === "finance") {
       deptFields = {
-        financeMotivation: formData.financeMotivation,
-        excelProficiency: formData.excelProficiency,
-        fintechAwareness: formData.fintechAwareness,
+        whyFinance: formData.whyFinance,
+        excel: formData.excel,
+        financialAwareness: formData.financialAwareness,
       };
     }
 
