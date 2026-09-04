@@ -14,7 +14,7 @@ export interface Member {
 
 async function getMembers(): Promise<Member[]> {
   return client.fetch(
-    `*[_type == "member"] | order(name asc){ _id, name, codechefUsername, rating, "active": active != false }`,
+    `*[_type == "users"] | order(name asc){ _id, name, codechefUsername, rating, "active": active != false }`,
     {},
     { useCdn: false }
   );

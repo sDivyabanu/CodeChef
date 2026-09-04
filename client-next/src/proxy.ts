@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { ADMIN_SESSION_COOKIE, verifySessionCookieValue } from '@/lib/adminSession';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
   const pathname = url.pathname;
   const referer = request.headers.get('referer') || '';
@@ -31,7 +31,7 @@ export async function middleware(request: NextRequest) {
   if (isAssets || isClient || (hasExtension && !isNextInternal && (referer.includes('proxy-flappy') || referer.includes('flappy-chef')))) {
     const targetUrl = new URL(pathname + url.search, 'https://flappychef.poseidon0z.com');
     console.log(`[PROXY] Proxying: ${pathname} -> ${targetUrl.toString()}`);
-    
+
     try {
       const response = await fetch(targetUrl.toString(), {
         headers: {

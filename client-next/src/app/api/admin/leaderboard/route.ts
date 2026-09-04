@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest) {
 
     if (memberIds.length > 0) {
       const activeMembers: string[] = await client.fetch(
-        `*[_type == "member" && active == true && _id in $ids]._id`,
+        `*[_type == "users" && active == true && _id in $ids]._id`,
         { ids: memberIds },
         { useCdn: false }
       );

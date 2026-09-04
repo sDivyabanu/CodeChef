@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     }
 
     const member = await writeClient.create({
-      _type: "member",
+      _type: "users",
       name,
       codechefUsername,
       rating,
