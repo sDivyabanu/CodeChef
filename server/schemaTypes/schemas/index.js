@@ -9,6 +9,8 @@ import Presidents from './Presidents'
 import Recruitments from './RecruitmentSheetLinks'
 import Events from './Events'
 import Projects from './Projects'
+import ClubMember from './ClubMember'
+import CurrentLeaderboard from './CurrentLeaderboard'
 //Exporting all Schemas
 export {
   Departments,
@@ -21,6 +23,8 @@ export {
   Recruitments,
   Events,
   Projects,
+  ClubMember,
+  CurrentLeaderboard,
 }
 
 //This is file is meant for imports only

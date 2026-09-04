@@ -1,10 +1,25 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { ADMIN_SESSION_COOKIE, verifySessionCookieValue } from '@/lib/adminSession';
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const pathname = url.pathname;
   const referer = request.headers.get('referer') || '';
+
+  // Protect the admin dashboard and its API routes (login endpoint stays public)
+  const isProtectedAdminPage = pathname.startsWith('/admin') && pathname !== '/admin/login';
+  const isProtectedAdminApi = pathname.startsWith('/api/admin') && pathname !== '/api/admin/login';
+
+  if (isProtectedAdminPage || isProtectedAdminApi) {
+    const session = await verifySessionCookieValue(request.cookies.get(ADMIN_SESSION_COOKIE)?.value);
+    if (!session) {
+      if (isProtectedAdminApi) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      return NextResponse.redirect(new URL('/admin/login', request.url));
+    }
+  }
 
   // Check if this is a request from or for the Flappy Chef game
   const isAssets = pathname.startsWith('/assets/');

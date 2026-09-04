@@ -7,7 +7,7 @@ import FloatingIcons from "../FloatingIcons/FloatingIcons";
 export default function NavbarWrapper() {
   const pathname = usePathname();
 
-  if (pathname === "/") {
+  if (pathname === "/" || pathname.startsWith("/admin")) {
     return null;
   }
 

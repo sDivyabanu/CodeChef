@@ -9,6 +9,8 @@ import {
   Events,
   Recruitments,
   Projects,
+  ClubMember,
+  CurrentLeaderboard,
 } from './schemas'
 import RecruitmentSheetLinks from './schemas/RecruitmentSheetLinks'
 
@@ -23,4 +25,6 @@ export const schemaTypes = [
   RecruitmentSheetLinks,
   Events,
   Projects,
+  ClubMember,
+  CurrentLeaderboard,
 ]
