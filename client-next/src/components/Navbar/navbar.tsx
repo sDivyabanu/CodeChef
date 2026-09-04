@@ -22,9 +22,15 @@ export default function Navbar() {
     <div
       className="
         fixed
-        right-6
-        top-1/2
-        -translate-y-1/2
+        bottom-3
+        left-1/2
+        -translate-x-1/2
+        lg:left-auto
+        lg:bottom-auto
+        lg:right-6
+        lg:top-1/2
+        lg:translate-x-0
+        lg:-translate-y-1/2
         z-50
       "
     >
@@ -32,15 +38,20 @@ export default function Navbar() {
         className="
           bg-black/95
           backdrop-blur-md
-          rounded-[28px]
-          px-2
-          py-8
+          rounded-[22px]
+          lg:rounded-[28px]
+          px-3
+          lg:px-2
+          py-2
+          lg:py-8
           border
           border-white/10
           shadow-2xl
+          max-w-[calc(100vw-1.5rem)]
+          overflow-hidden
         "
       >
-        <div className="flex flex-col items-center gap-5">
+        <div className="flex flex-row lg:flex-col items-center gap-3 sm:gap-5">
           {navItems.map((item) => {
             const Icon = item.icon;
 
@@ -64,9 +75,12 @@ export default function Navbar() {
                 <span
                   className="
                     font-bebas
-                    text-xs
-                    tracking-wider
+                    text-[10px]
+                    sm:text-xs
+                    tracking-wide
+                    sm:tracking-wider
                     text-center
+                    leading-none
                   "
                 >
                   {item.name}

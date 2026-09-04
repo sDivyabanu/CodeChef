@@ -1,9 +1,0 @@
-.modal {
-    max-width: 600px;
-    max-height: 69.5vh;
-    overflow-y: auto;
-    overflow-x: auto;
-    scrollbar-width: none;
-    /* scrollbar-width: thin;
-    scrollbar-color: #7ea9ef #fff; */
-}

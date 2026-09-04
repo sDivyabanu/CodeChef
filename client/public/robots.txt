@@ -1,6 +1,0 @@
-User-agent: *
-Disallow: 
-
-Sitemap: https://codechefvitcc.vercel.app/robots.txt
-
-{12kjnkKBKJK232JBKJ445}

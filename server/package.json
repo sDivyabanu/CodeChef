@@ -15,11 +15,12 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/vision": "^3.44.0",
+    "@sanity/vision": "^3.99.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sanity": "^3.47.1",
-    "styled-components": "^6.1.8"
+    "sanity": "^3.99.0",
+    "styled-components": "^6.1.8",
+    "yargs": "^18.0.0"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^4.0.0",
@@ -33,5 +34,8 @@
     "printWidth": 100,
     "bracketSpacing": false,
     "singleQuote": true
+  },
+  "overrides": {
+    "yargs": "^18.0.0"
   }
 }
