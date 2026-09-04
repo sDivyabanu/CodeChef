@@ -7,7 +7,7 @@ export default {
       name: 'top10',
       title: 'Top 10',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'member'}]}],
+      of: [{type: 'reference', to: [{type: 'users'}]}],
       validation: (Rule) =>
         Rule.max(10).error('At most 10 members can be in the leaderboard.').custom((refs) => {
           if (!refs) return true

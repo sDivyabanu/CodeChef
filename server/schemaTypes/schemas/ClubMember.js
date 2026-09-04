@@ -1,6 +1,6 @@
 export default {
-  name: 'member',
-  title: 'Club Members',
+  name: 'users',
+  title: 'Users',
   type: 'document',
   fields: [
     {
