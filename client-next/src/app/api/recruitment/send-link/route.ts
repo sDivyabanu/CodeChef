@@ -10,9 +10,6 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: smtpUser,
     pass: smtpPass,
-  },
-  tls: {
-    rejectUnauthorized: false
   }
 });
 
