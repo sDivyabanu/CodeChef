@@ -2,13 +2,12 @@ const fetch = require("node-fetch");
 
 // Email sending packages and config. ********
 const nodemailer = require("nodemailer");
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "codechef.vitcc@gmail.com",
-    pass: "eguq lcud nyfp zdmm",
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 // *****************************************
@@ -25,7 +24,7 @@ const client = sanityClient.createClient({
   apiVersion: "2022-02-01",
   useCdn: true,
   token:
-    "skiwXyd1N4dGbQr3p1GK1d6eENBeWgFLX6DjppkobW3bX8npVtgjnFNKhNbYlydDH3U8EKUxHBRoiU9ROcf8fxzf0XHgZLyCMrHTz6HEAfwmigvqPxnZvTtLlOCFIW5YIiGydFRrsdbPa58XedlykSoRNN35sQEOq1vhC3NbyibJRdvVV1nR",
+    process.env.SANITY_API_TOKEN,
 });
 
 async function getSheetLinks() {
